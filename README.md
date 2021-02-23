@@ -1,1 +1,1 @@
-# nifty-dev-coding-guide
+# niftycodingguide
