@@ -137,6 +137,7 @@
       <ol>
         <li>
           <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preconnected then preloaded. Change the Google fonts preload link to represent fonts needed on the site.</p>
+	  <p>***Note: It is better to self-host Google fonts instead. Download either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet that calls the fonts. Make sure to set font-display: swap. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience.
         </li>
         <li>
           <p>Any third-party assets being loaded in above-the-fold content should be preconnected.</p>
