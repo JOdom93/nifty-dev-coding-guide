@@ -140,8 +140,8 @@
 	  <p>***Note: It is better to self-host Google fonts instead. Download either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet that calls the fonts. Make sure to set font-display: swap. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
 	  <p><strong>HEADER.PHP</strong></p>
 	  <code>
-		<p><link rel="preload" as='stylesheet' href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/></p>
-		<p><link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" media="print" onload="this.media='all'"/></p>
+		<p>&#0029link rel="preload" as='stylesheet' href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/&#0031</p>
+		<p>&#0029link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" media="print" onload="this.media='all'"/&#0031</p>
 	  </code>
 	  <p><strong>/template-parts/fonts/playfair-display.css (change out the css file for the font you are using)</strong></p>
 	  <code>
