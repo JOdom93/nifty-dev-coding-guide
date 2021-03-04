@@ -137,7 +137,35 @@
       <ol>
         <li>
           <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preconnected then preloaded. Change the Google fonts preload link to represent fonts needed on the site.</p>
-	  <p>***Note: It is better to self-host Google fonts instead. Download either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet that calls the fonts. Make sure to set font-display: swap. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience.
+	  <p>***Note: It is better to self-host Google fonts instead. Download either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet that calls the fonts. Make sure to set font-display: swap. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
+	  <p><strong>HEADER.PHP</strong></p>
+	  <code>
+		<p><link rel="preload" as='stylesheet' href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/></p>
+		<p><link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" media="print" onload="this.media='all'"/></p>
+	  </code>
+	  <p><strong>/template-parts/fonts/playfair-display.css (change out the css file for the font you are using)</strong></p>
+	  <code>
+		<p>@font-face {</p>
+		<p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
+		<p>&nbsp; font-style: normal;</p>
+		<p>&nbsp; font-weight: 400;</p>
+		<p>&nbsp; font-display: swap;</p>
+		<p>&nbsp; src: local(&#39;&#39;),</p>
+		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff2&#39;) format(&#39;woff2&#39;),</p>
+		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff&#39;) format(&#39;woff&#39;);</p>
+		<p>}</p>
+		<p>/* playfair-display-700 - latin */</p>
+		<p>@font-face {</p>
+		<p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
+		<p>&nbsp; font-style: normal;</p>
+		<p>&nbsp; font-weight: 700;</p>
+		<p>&nbsp; font-display: swap;</p>
+		<p>&nbsp; src: local(&#39;&#39;),</p>
+		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff2&#39;) format(&#39;woff2&#39;),</p>
+		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff&#39;) format(&#39;woff&#39;);</p>
+		<p>}</p>
+	  </code>
+	  <p>Use <a href="https://google-webfonts-helper.herokuapp.com/fonts">this Google-approved resource</a> (though not by google) to generate the css and woff files you need.</p>
         </li>
         <li>
           <p>Any third-party assets being loaded in above-the-fold content should be preconnected.</p>
