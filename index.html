@@ -644,7 +644,7 @@
 		&lt;/script&gt;
     </code>
   </div>
-  <p>The fetch request, in this case was set on a 5 second timeout function, but it may be more advantageous to set a scroll event listener on the window and then wait for the top of the section to be 150 pixels from the bottom of the screen before making the fetch request.</p>
+  <p>The fetch request request is made on scroll or load if the form container is 150px from the bottom of the screen. The fetch request is made to the newly created AJAX page, a new element is created to serve as a validation element, and the function check labels is set to ensure that the validation element works and a form can be submitted.</p>
   <h4 id="iframe">Iframe</h4>
   <p>Some shortcodes may not work if they are being called via a fetch request. In this case, we should be able to lazyload the shortcode by iframe instead.</p>
   <p>If using an iframe, it should look like this:</p>
