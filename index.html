@@ -561,15 +561,12 @@
       <p>&nbsp;*&nbsp;</p>
       <p>&nbsp;*/</p>
       <p>?&gt;</p>
-      <p>&lt;?php wp_head(); ?&gt;</p>
       <p>&lt;?= apply_shortcodes('[gravityform id="1" title="false" description="false" ajax="false"]'); ?&gt;</p>
-      <p>&lt;?php wp_footer(); ?&gt;</p>
     </code>
   </div>
   <p>Note: It is important to set the ajax value to &ldquo;false&rdquo; or the lazy loading will not work for Gravity Forms.</p>
   <p>Make the template name:</p>
   <p>AJAX (description of the shortcode)</p>
-  <p>Add the wp_head() and wp_footer() functions so the shortcode can hook into them if need be.</p>
   <p>Echo a do_shortcode() or apply_shortcodes() method with the shortcode inside.</p>
   <p>Create a wordpress page that should be named as follows</p>
   <p>AJAX: (same name you used for the template file)</p>
@@ -592,22 +589,59 @@
   <p>Add a fetch request to the AJAX page you created and it will output the shortcode as expected:</p>
   <div align="left">
     <code>
-      <p>&lt;section class="home-contact section-padding"&gt;</p>
-      <p>&lt;/section&gt;</p>
-      <p>&lt;?php if(!function_exists('apply_home_contact_styles')){</p>
-      <p>function apply_home_contact_styles(){ ?&gt;</p>
-      <p>&lt;script&gt;</p>
-      <p>setTimeout(()=&gt;{</p>
-      <p>fetch("&lt;?= home_url() . '/ajax-form-1/'; ?&gt;")</p>
-      <p>.then(response =&gt; response.text())</p>
-      <p>.then(data =&gt; {</p>
-      <p>document.querySelector(".home-contact").innerHTML = data;</p>
-      <p>});</p>
-      <p>}, 5000);</p>
-      <p>&lt;/script&gt;</p>
-      <p>&lt;?php }</p>
-      <p>add_action( 'wp_footer', 'apply_home_contact_styles' );</p>
-      <p>}?&gt;</p>
+      &lt;script&gt;
+			window.addEventListener("scroll", loadForm);
+			window.addEventListener("load", loadForm);
+			let formLoaded = 0;
+
+			function loadForm(){
+				let sectionTop = document.querySelector(".home-contact").getBoundingClientRect().top;
+				if(sectionTop - window.innerHeight &lt; 150 && formLoaded == 0){
+					fetch("&lt;?= home_url() . '/ajax-form/'; ?&gt;")
+						.then(response =&gt; response.text())
+						.then(data =&gt; {
+						document.querySelector(".home-contact .form-section .form-container").innerHTML = data;
+						&lt;?php 
+										 global $post;
+										 $post_slug = $post-&gt;post_name;
+						?&gt;
+						document.querySelector(".home-contact form").setAttribute("action", "/&lt;?= $post_slug; ?&gt;/#gf_1");
+						let newInput = document.createElement("input");
+						newInput.setAttribute("style", "padding: 15px 10%; margin-top: 8px; text-transform: uppercase;font-family: var(--text-font); font-weight: 700; color: #fff; background: transparent; border-radius: 6px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; border: none; outline: none; user-select: none; color: transparent;");
+						newInput.setAttribute("class", "over-submit");
+						newInput.setAttribute("onclick", "checkLabels()");
+						document.querySelector(".gform_footer.top_label").appendChild(newInput);
+					});
+					formLoaded++;
+				}
+			}
+			
+			function checkLabels(){
+				let alerted = 0;
+				document.querySelectorAll(`#gform_1 input[aria-required="true"], #gform_1 textarea[aria-required="true"]`).forEach(item=&gt;{
+					if(!item.value){
+						alerted++;
+					}
+				});
+				if(alerted &gt; 0){
+					alert("Please fill out all required fields. \n Required fields are marked with an asterisk ( * )");
+				}else{
+					document.querySelector(".over-submit").remove();
+					document.querySelector("#gform_submit_button_1").click();
+				}
+			}
+		&lt;/script&gt;
+
+		&lt;script&gt;
+			window.addEventListener("load", fadeinContact);
+			window.addEventListener("scroll", fadeinContact);
+			function fadeinContact(){
+				let scrollFromTop = document.querySelector(".home-contact .lion-head").getBoundingClientRect().top;
+				if(scrollFromTop &lt; window.innerHeight * .66){
+					document.querySelector(".home-contact .lion-head").classList.add("active");
+				}
+			}
+		&lt;/script&gt;
     </code>
   </div>
   <p>The fetch request, in this case was set on a 5 second timeout function, but it may be more advantageous to set a scroll event listener on the window and then wait for the top of the section to be 150 pixels from the bottom of the screen before making the fetch request.</p>
