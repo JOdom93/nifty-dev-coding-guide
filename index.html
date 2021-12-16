@@ -90,7 +90,8 @@
     </li>
     <li onclick="scrollView(event, '#lazy-loading')"><span>IV. Lazy Loading Shortcodes</span></li>
     <li onclick="scrollView(event, '#gravity-forms')"><span>V. Gravity Forms Setup</span></li>
-    <li onclick="scrollView(event, '#global-considerations')"><span>VI. Global Considerations</span></li>
+    <li onclick="scrollView(event, '#amp-setup')"><span>VI. Setting Up a Site on AMP</span></li>
+    <li onclick="scrollView(event, '#global-considerations')"><span>VII. Global Considerations</span></li>
     </ul>
 </div>
 
@@ -657,7 +658,7 @@
   </div>
   <p>Adjust the width and height to compensate for CLS and maintain aspect ratio, depending on the shortcode source you are loading.</p>
   <h3 id="webp">webp (directory)</h3>
-  <p>This directory is where we add webp images, since the current Wordpress media library doesn&rsquo;t currently support webp images.</p>
+  <p>This directory is where we add used to add webp images. Previous Wordpress media library functionality didn't support webp images, but newer versions do. If a site was coded before this .webp functionality, this file will still be used by the site in some instances, but all further .webp images can and should be uploaded to the media library as any other image would require.</p>
   <p>The file blank.php exists simply so that the file will appear in the Wordpress editor, though the webp images won&rsquo;t appear in the file &ndash; these will only be accessible/visible via FTP.</p>
   <p>For instruction on how to use webp images and when, see <a onclick="scrollView(event, '#loading-images')">images</a>.</p>
   <h2 id="shortcode-instructions">III. Shortcodes</h2>
@@ -818,7 +819,70 @@
   <p>When using Gravity Forms, set &ldquo;Output CSS&rdquo; to &ldquo;No&rdquo; in settings. This will prevent forms from loading extra, render-blocking styles.</p>
   <p>When using the gravity form, especially if being lazy loaded, be sure to set the ajax attribute of the shortcode to &ldquo;false&rdquo; to prevent submission errors.</p>
   <p>Style the validation messages to ensure legibility.</p>
-  <h2 id="global-considerations">VI. Global Considerations</h2>
+	
+  <h2 id="amp-setup">VI. Setting Up a Site on AMP</h2>
+  <p><strong>Known Issues:</strong></p>
+  <p>- Gravity forms ajax validation messages not working.</p>
+  <p>- AMP cannot be crawled on staging, so validation will only work on live sites.</p>
+  <p>1. Add "AMP" <strong>official</strong> plugin.</p>
+  <p>2. Edit AMP's settings:</p>
+  <p>- Change "Website Mode" to "<strong>Transitional</strong>"</p>
+  <p>- "Validation Handling" &amp; "Supported Templates" both should be checked</p>
+  <p>3. <strong>Edit the PHP part of lazy loader</strong> from:</p>
+  <code>if(!array_key_exists('data-url', $attr)){</code>
+  <p>to:</p>
+  <code>if(!array_key_exists('data-url', $attr) &amp;&amp; !is_amp_endpoint()){</code>
+  <p>4. Add <strong>gravity forms AMP fix file</strong> to theme in <strong>includes folder</strong> &amp; add this to the <strong>top of theme_changes.php</strong>:</p>
+  <code>
+    <p>// Gravity Forms AMP Fixes</p>
+    <p>require_once( get_stylesheet_directory() . '/includes/amp-gf-fix.php' );</p>
+  </code>
+  <p><em>5. View <strong>each AMP page </strong>(within reason) with "?amp" and fix errors.</em></p>
+  <p>- <u>Validating AMP</u> is visually looking at the page <u>and</u> checking google's tool: <a href="https://search.google.com/test/amp">https://search.google.com/test/amp</a></p>
+  <p>- <u>Boolean if on an AMP page is</u>: is_amp_endpoint()</p>
+  <p>- <u>Background images should be lazy loaded for non-AMP but add style image css for AMP pages. Like</u>:</p>
+  <code>
+    <p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
+    <p>.home-team{background-image:url('&lt;?= wp_get_attachment_image_src(5449, 'full')[0]; ?&gt;');}</p>
+    <p>&lt;?php } ?&gt;</p>
+  </code>
+  <p>- <u>Youtube videos can load but not with a missing src attribute. So make them a normal iframe with a src on AMP.</u></p>
+  <p>- <u>Reviews badge should not render in the footer on AMP pages.</u></p>
+  <p>6. Add this to <strong>header scripts</strong> and <strong>edit the UA</strong> code:</p>
+    <code>
+    	<p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
+	<p>&lt;script async custom-element="amp-analytics" src="<a class="ProsemirrorEditor-link" href="https://cdn.ampproject.org/v0/amp-analytics-0.1.js">https://cdn.ampproject.org/v0/amp-analytics-0.1.js</a>"&gt;&lt;/script&gt;</p>
+	<p>&lt;amp-analytics type="gtag" data-credentials="include"&gt;</p>
+	<p>&lt;script type="application/json"&gt;</p>
+	<p>&nbsp; {</p>
+	<p>&nbsp; &nbsp; "vars": {</p>
+	<p>"gtag_id": "UA-XXXXX-X",</p>
+	<p>"config" : {</p>
+	<p>&nbsp; "UA-XXXXX-X": { "groups": "default" }</p>
+	<p>}</p>
+	<p>&nbsp; &nbsp; },</p>
+	<p>&nbsp; &nbsp; "triggers": {</p>
+	<p>&nbsp; &nbsp; &nbsp; "trackPageview": {</p>
+	<p>&nbsp; &nbsp; &nbsp; &nbsp; "on": "visible",</p>
+	<p>&nbsp; &nbsp; &nbsp; &nbsp; "request": "pageview"</p>
+	<p>&nbsp; &nbsp; &nbsp; }</p>
+	<p>&nbsp; &nbsp; }</p>
+	<p>&nbsp; }</p>
+	<p>&nbsp; &lt;/script&gt;</p>
+	<p>&lt;/amp-analytics&gt;</p>
+	<p>&lt;?php } ?&gt;</p>
+	<p>&nbsp;</p>
+    </code>
+  <p>7. <strong>Create </strong>an AMP thank you page: /thank-you-amp</p>
+  <p><em> - Reason: because the AMP fix file is setup to do this.</em></p>
+  <p>8. <strong>Optimole</strong> - use this plugin to encode images, don't need to do by hand</p>
+  <p>9. <strong>Ask PM</strong>:</p>
+  <p>- Add an analytics destination goal with <strong>begin-to</strong> to: "/thank-you-amp"</p>
+  <p>- Watch for AMP issues in Google Search Console and tell you if some are invalid.</p>
+  <p>10. <strong>Mark in master sheet</strong> that site is AMP.</p>	
+	
+  
+  <h2 id="global-considerations">VII. Global Considerations</h2>
   <p>There are overarching rules to coding our sites in addition to those already defined in the previous sections. They are as follows:</p>
   <ol>
     <li>
