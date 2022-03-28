@@ -948,6 +948,128 @@
       <p>- Add an analytics destination goal with <strong>begin-to</strong> to: "/thank-you-amp"</p>
       <p>- Watch for AMP issues in Google Search Console and tell you if some are invalid.</p>
       <p>10. <strong>Mark in master sheet</strong> that site is AMP.</p>
+      
+      <h2 id="translations">VIII. Adding Site Translations</h2>
+      <p>There are certain sites that will require translations. These translations will be handled manually in our code. The following steps detail how this is to be done.</p>
+      <p>To understand clearly how to do this, we will have a few terms we need to define for this guide so that we are clear: </p>
+      <ol>
+        <li><strong>Overall language page: </strong>The is the overall language page under which other, translated pages will be nested. It is generally a clone/copy of the site's homepage in the second language. It will bear the title of the language (i.e. "Espanol" or "Tagalog") and the slug will be the language or the language code (i.e. /es/ or /espanol/ or /tagalog/ or /tgl/ etc.)</li>
+        <li><strong>Initial page:</strong>The English page that needs to be translated</li>
+        <li><strong>Translation page:</strong>The translation of the corresponding English page.</li>
+      </ol>
+      <h3>Initial Setup</h3>
+      <ol>
+        <li>If the overall language page has not been set up yet, create that page.</li>
+        <li>Create a new translation language page and set its parent page as the overall language page.</li>
+        <li>Navigate to the initial page that corresponds with the translation page you just created and set the following value for a custom field:
+          <ul>
+            <li>name: has_translation; </li>
+            <li>value: &lt;page id of the translation page you just created&gt;</li>
+          </ul>
+        </li>
+        <li>Navigate to the translation page and add the following custom field values:
+          <ul>
+            <li>name: is_translation;</li>
+            <li>value: &lt;page id of the initial page&gt;</li>
+          </ul>
+        </li>
+        <li>If you want there to be an a language switcher in the header or an English / Second Language Menu, navigate to menus and create and name the second language menu. Add any translated pages to the menu as needed.</li>
+        <li>Navigate to the header.php. Using php logic, evaluate each page if they have a translation or not. If they do, you will grab the ID of its corresponding language. If they don't, link to either the hompage (if second language) or the overall language page (if English). Example below:
+          <code>
+            &lt;?php <br>
+            //checks if the page is English or Spanish (defaults to English) <br>
+            // this is necessary for both the language switcher and switching the menus<br>
+            if(get_post_meta(get_the_ID(), 'is_translation', true)){ <br>
+             &nbsp; &nbsp; $language = 'translation';<br>
+            }else{ <br>
+            &nbsp; &nbsp; $language = 'english'<br>
+            }
+            <br>
+            <br>
+            //checks if the page has English or Spanish translations for the language switcher<br>
+            if(get_post_meta(get_the_ID(), 'has_translation', true)){ <br>
+              &nbsp; &nbsp; $translated_page = get_post_meta(get_the_ID(), 'has_translation', true);<br>
+            }else{ <br>
+               &nbsp; &nbsp; $translated_page = &lt;page ID of the overall language page&gt;;<br>
+            }
+            <br>
+            <br>
+            if(get_post_meta(get_the_ID(), 'is_translation', true)){ <br>
+              &nbsp; &nbsp; $english_page = get_post_meta(get_the_ID(), 'is_translation', true);<br>
+            }else{ <br>
+               &nbsp; &nbsp; $english_page = &lt;page ID of the home page page&gt;;<br>
+            }<br>
+            ?>
+          </code>
+        </li>
+        <li>Wherever you are placing your English to Spanish language switcher, output the switcher with the right links:
+          <code>
+            &lt;div class="langage-switcher-menu"> <br>
+            &lt;?php <br>
+            //change out the the echo for whichever language <br>
+            if($language == 'english'){ <br>
+            &nbsp; &nbsp; echo '&lt;a href="get_permalink(' . $translated_page . ')">Espanol&lt;/a>'; <br>
+            }else{ <br>
+            &nbsp; &nbsp; echo '&lt;a href="get_permalink(' . $english_page . ')">English&lt;/a>'; <br>
+            } <br>
+            ?> <br>
+            &lt;/div>
+          </code>
+        </li>
+        <li>Wherever you are placing your overall menu / navigation, you can switch which menu you use based on which page you are on:
+          <code>
+            &lt;div class="flex menus"><br>
+            &nbsp; &nbsp; &lt;input tabindex="-1" type="checkbox" class="mobile-nav-input" id="mobile-nav-input"><br>
+            &nbsp; &nbsp; &lt;label tabindex="0" class="mobile-nav" for="mobile-nav-input" onkeyup="checkTheBox(event);">☰&lt;/label><br>
+            &nbsp; &nbsp; &lt;nav class="main-nav" aria-label="Main Menu"><br>
+            &lt;?php <br>
+            if($language == 'english'){ <br>
+            &nbsp; &nbsp; wp_nav_menu(array(<br>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'menu' => 'Main',<br>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'menu_class' => 'main-menu',<br>
+            &nbsp; &nbsp; )); <br>
+            &nbsp; &nbsp; }else{ <br>
+            &nbsp; &nbsp; wp_nav_menu(array(<br>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'menu' => 'Name of langauge_nav',<br>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'menu_class' => 'main-menu',<br>
+            &nbsp; &nbsp; )); <br>
+            &nbsp; &nbsp; } <br>
+            ?> <br>
+            &nbsp; &nbsp; &lt;/nav>  <br>
+            &lt;/div>
+          </code>
+        </li>
+        <li>Ensure styling for the second language navigation matches that of the English navigation</li>
+      </ol>
+      <h3>Other Translated Pages</h3>
+      <p>Once the initial setup is done, repeat steps 2-4 above for any additional pages</p>
+      <h3>Setting Up Translated Content</h3>
+      <p>If translated content is being brought in through a shortcode's $content variable or through its $atts attributes, meaning the content is being added in the WP editor, then no further actions need to be completed.</p>
+      <p>If content is being rendered through the php shortcode itself:</p>
+      <ol>
+        <li>Add the following code to the /includes/theme-changes.php file at the bottom of the page:
+          <code>
+            function switch_lang($english, $second_lang){ <br>
+            //checks if the page is English or Spanish (defaults to English) <br>
+            if(get_post_meta(get_the_ID(), 'is_translation', true)){ <br>
+            &nbsp; &nbsp; $language = 'translation';<br>
+            }<br>
+            if($language == 'translation'){ <br>
+            &nbsp; &nbsp; return $second_lang;
+            }else{
+            &nbsp; &nbsp; return $english;
+            }
+          </code>
+          <ul>
+            <li>This ensures that the next step will work and will return the right language based on each page.</li>
+          </ul>
+        </li>
+        <li>In the shortcode, where you are rendering text that needs to change based on the Spanish / English translation, add the following code:
+          <code>
+            &lt;= switch_lang('This is the English text', 'Esto es el texto de langua secunda'); ?>
+          </code>
+        </li>
+      </ol>
 
       <h2 id="global-considerations">VIII. Global Considerations</h2>
       <p>There are overarching rules to coding our sites in addition to those already defined in the previous sections. They are as follows:</p>
