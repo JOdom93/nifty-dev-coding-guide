@@ -91,7 +91,8 @@
     <li onclick="scrollView(event, '#lazy-loading')"><span>IV. Lazy Loading Shortcodes</span></li>
     <li onclick="scrollView(event, '#gravity-forms')"><span>V. Gravity Forms Setup</span></li>
     <li onclick="scrollView(event, '#amp-setup')"><span>VI. Setting Up a Site on AMP</span></li>
-    <li onclick="scrollView(event, '#global-considerations')"><span>VII. Global Considerations</span></li>
+    <li onclick="scrollView(event, '#translations')"><span>VII. Adding Site Translations</span></li>
+    <li onclick="scrollView(event, '#global-considerations')"><span>VIII. Global Considerations</span></li>
     </ul>
 </div>
 
@@ -122,7 +123,7 @@
     </li>
   </ol>
   <h3 id="functions">functions.php</h3>
-  <p>The functions.php should remain untouched. Any theme functions that need to be added for a site should be controlled by the themechanges.php file.</p>
+  <p>The functions.php should remain untouched. Any theme functions that need to be added for a site should be controlled by the theme-changes.php file.</p>
   <h3 id="page-404">404.php</h3>
   <p>This page should represent the styles of the site, including a header banner and footer when appropriate. Be sure to change the styles of this page to match the rest of the site, incorporating shortcodes if applicable.</p>
   <h3 id="archive">archive.php</h3>
@@ -137,12 +138,10 @@
       <p>preload/preconnect urls</p>
       <ol>
         <li>
-          <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preconnected then preloaded. Change the Google fonts preload link to represent fonts needed on the site.</p>
-	  <p>***Note: It is better to self-host Google fonts instead. Download either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet that calls the fonts. Make sure to set font-display: swap. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
-	  <p><strong>HEADER.PHP</strong></p>
+          <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preloaded. We only self-host Google fonts by downloading either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet in the same /fonts/ directory that calls the fonts. Do NOT set a font-display property. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
 	  <code>
-		<p><' link rel="preload" as='stylesheet' href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/'></p>
-		<p><' link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" media="print" onload="this.media='all'"/'></p>
+		<p><' link rel="preload" as="style" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/'></p>
+		<p><' link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/'></p>
 	  </code>
 	  <p><strong>/template-parts/fonts/playfair-display.css (change out the css file for the font you are using)</strong></p>
 	  <code>
@@ -150,7 +149,6 @@
 		<p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
 		<p>&nbsp; font-style: normal;</p>
 		<p>&nbsp; font-weight: 400;</p>
-		<p>&nbsp; font-display: swap;</p>
 		<p>&nbsp; src: local(&#39;&#39;),</p>
 		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff2&#39;) format(&#39;woff2&#39;),</p>
 		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff&#39;) format(&#39;woff&#39;);</p>
@@ -160,13 +158,12 @@
 		<p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
 		<p>&nbsp; font-style: normal;</p>
 		<p>&nbsp; font-weight: 700;</p>
-		<p>&nbsp; font-display: swap;</p>
 		<p>&nbsp; src: local(&#39;&#39;),</p>
 		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff2&#39;) format(&#39;woff2&#39;),</p>
 		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff&#39;) format(&#39;woff&#39;);</p>
 		<p>}</p>
 	  </code>
-	  <p>Use <a href="https://google-webfonts-helper.herokuapp.com/fonts">this Google-approved resource</a> (though not by google) to generate the css and woff files you need.</p>
+	  <p>Use <a href="https://google-webfonts-helper.herokuapp.com/fonts">this Google-approved resource</a> (though not by Google) to generate the css and woff files you need.</p>
         </li>
         <li>
           <p>Any third-party assets being loaded in above-the-fold content should be preconnected.</p>
@@ -848,7 +845,7 @@
   </code>
   <p>- <u>Youtube videos can load but not with a missing src attribute. So make them a normal iframe with a src on AMP.</u></p>
   <p>- <u>Reviews badge should not render in the footer on AMP pages.</u></p>
-  <p>6. Add this to <strong>header scripts</strong> and <strong>edit the UA</strong> code:</p>
+  <p>6. Add this to <strong>header scripts</strong> and <strong>edit the UA</strong> code (remember to replace the XX-XXXXX-X placeholders with the actual Google Analytics account number of the client:</p>
     <code>
     	<p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
 	<p>&lt;script async custom-element="amp-analytics" src="<a class="ProsemirrorEditor-link" href="https://cdn.ampproject.org/v0/amp-analytics-0.1.js">https://cdn.ampproject.org/v0/amp-analytics-0.1.js</a>"&gt;&lt;/script&gt;</p>
@@ -881,8 +878,11 @@
   <p>- Watch for AMP issues in Google Search Console and tell you if some are invalid.</p>
   <p>10. <strong>Mark in master sheet</strong> that site is AMP.</p>	
 	
+	
   
-  <h2 id="global-considerations">VII. Global Considerations</h2>
+	
+  
+  <h2 id="global-considerations">VIII. Global Considerations</h2>
   <p>There are overarching rules to coding our sites in addition to those already defined in the previous sections. They are as follows:</p>
   <ol>
     <li>
@@ -923,7 +923,7 @@
       <p>Mobile menu usually breaks at 1000px, but may be adjusted for different designs.</p>
     </li>
     <li>
-      <p>Our company will not use custom post types nor ACF (advanced custom fields).</p>
+      <p>Our company will not use ACF (advanced custom fields) or custom post types. Some custom post types may be brought over from legacy sites which we will continue to use, but if using, each custom post type should have the block editor added to the their capabilities as well as an appropriate template set to style the pages accordingly.</p>
     </li>
     <li>
       <p>Avoid reliance on third-party code bases as much as possible, specifically jQuery. Try to use vanilla JS wherever possible.</p>
@@ -931,6 +931,16 @@
     <li>
       <p>Our sites do not support IE, so CSS and JS compatibility may be extended to other major browsers.</p>
     </li>
+    <li>
+	    <p><strong>Linking phone numbers:</strong> All linked phone numbers, those being used in an href, should be in the following format regardless of how the text on the front-end is styled or rendered: <br>
+	    <code>
+		    <a href="tel:(###) ###-####">...</a>   
+	    </code>
+	    <br>
+	    This ensures that the number follows the standard calling conventions in the US to allow for caller ID and related phone compatibilities.
+	    </p>
+    </li>
+    <li>All styled buttons / <a> tags functioning as buttons need to have at least a simple animation added on hover. Users should also know that the button is a link by ensureing the whole button is clickable and the cursor is a pointer. The words of the button should not be the only linkable part of the button; the whole button needs to be clickable to improve UX.</li>
     <li>
       <p>Periodically check pagespeed score as you develop new sections:</p>
       <ol>
