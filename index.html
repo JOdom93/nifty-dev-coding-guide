@@ -1,967 +1,1035 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Nifty 2021 Theme Development Documents</title>
-<style>
-	body{margin: 0; scroll-behavior: smooth;}
-	*{box-sizing: border-box;}
-	.container{display: flex; height: 100vh; overflow: hidden;}
-	.container .sidebar{width: 25%; background: #333; color: white; padding: 1% 3%; height: 100vh; overflow: scroll;}
-	.container .sidebar li{line-height: 1.5em; font-family: Arial, sans-serif; cursor: pointer;}
-	.container .sidebar li > span{transition: color .25s;}
-	.container .sidebar li:hover > span{color: purple;}
-	.container .sidebar .overall{padding: 0;}
-	.container .sidebar .overall > li{list-style: none;}
-	.container .main-content{width: 75%; height: 100vh; overflow: scroll; padding: 5% 3%; font-family: sans-serif;}
-	.container .main-content *{line-height: 1.5em;}
-	code{background: #bfbfbf; border-radius: 10px; display: block; padding: 25px;}
-	code p{margin: 0;}
-	.container .main-content h2{margin-top: 4em;}
-	.container .main-content h3{margin-top: 2em;}
-	.container .main-content a{color: purple; cursor: pointer;}
-</style>
+  <title>Nifty 2021 Theme Development Documents</title>
+  <style>
+    body {
+      margin: 0;
+      scroll-behavior: smooth;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container .sidebar {
+      width: 25%;
+      background: #333;
+      color: white;
+      padding: 1% 3%;
+      height: 100vh;
+      overflow: scroll;
+    }
+
+    .container .sidebar li {
+      line-height: 1.5em;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .container .sidebar li>span {
+      transition: color .25s;
+    }
+
+    .container .sidebar li:hover>span {
+      color: purple;
+    }
+
+    .container .sidebar .overall {
+      padding: 0;
+    }
+
+    .container .sidebar .overall>li {
+      list-style: none;
+    }
+
+    .container .main-content {
+      width: 75%;
+      height: 100vh;
+      overflow: scroll;
+      padding: 5% 3%;
+      font-family: sans-serif;
+    }
+
+    .container .main-content * {
+      line-height: 1.5em;
+    }
+
+    code {
+      background: #bfbfbf;
+      border-radius: 10px;
+      display: block;
+      padding: 25px;
+    }
+
+    code p {
+      margin: 0;
+    }
+
+    .container .main-content h2 {
+      margin-top: 4em;
+    }
+
+    .container .main-content h3 {
+      margin-top: 2em;
+    }
+
+    .container .main-content a {
+      color: purple;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container">
-  <div class="sidebar">
-    <ul class="overall">
-      <li onclick="scrollView(event, '#theme-overview')"><span>I. Theme Overview</span></li>
-      <ul>
-        <li><span onclick="scrollView(event, '#purpose')">Purpose</span></li>
-      </ul>
-      </li>
-    <li><span onclick="scrollView(event, '#theme-file-structure')">II. Theme File Structure</span>
-      <ul>
-        <li onclick="scrollView(event, '#style')"><span>style.css</span></li>
-        <li onclick="scrollView(event, '#functions')"><span>functions.php</span></li>
-        <li onclick="scrollView(event, '#page-404')"><span>404.php</span></li>
-        <li onclick="scrollView(event, '#archive')"><span>archive.php</span></li>
-        <li onclick="scrollView(event, '#footer')"><span>footer.php</span></li>
-        <li onclick="scrollView(event, '#header)'"><span>header.php</span></li>
-        <li onclick="scrollView(event, '#search')"><span>search.php</span></li>
-        <li onclick="scrollView(event, '#single')"><span>single.php</span></li>
-        <li onclick="scrollView(event, '#page')"><span>page.php</span></li>
-        <li onclick="scrollView(event, '#index')"><span>index.php</span></li>
-        <li onclick="scrollView(event, '#includes')"><span>includes (directory)</span>
-          <ul>
-            <li onclick="scrollView(event, '#ajax-actions')"><span>ajax-actions.php</span></li>
-            <li onclick="scrollView(event, '#shortcodes')"><span>shortcodes.php</span></li>
-            <li onclick="scrollView(event, '#theme-changes')"><span>theme-changes.php</span></li>
-          </ul>
+  <div class="container">
+    <div class="sidebar">
+      <ul class="overall">
+        <li onclick="scrollView(event, '#theme-overview')"><span>I. Theme Overview</span></li>
+        <ul>
+          <li><span onclick="scrollView(event, '#purpose')">Purpose</span></li>
+        </ul>
         </li>
-        <li onclick="scrollView(event, '#pm-safe')"><span>pm-safe (directory)</span></li>
-        <li onclick="scrollView(event, '#template-parts')"><span>template-parts (directory)</span>
+        <li><span onclick="scrollView(event, '#theme-file-structure')">II. Theme File Structure</span>
           <ul>
-            <li onclick="scrollView(event, '#ada-components')"><span>ada-components (directory)</span>
+            <li onclick="scrollView(event, '#style')"><span>style.css</span></li>
+            <li onclick="scrollView(event, '#functions')"><span>functions.php</span></li>
+            <li onclick="scrollView(event, '#page-404')"><span>404.php</span></li>
+            <li onclick="scrollView(event, '#archive')"><span>archive.php</span></li>
+            <li onclick="scrollView(event, '#footer')"><span>footer.php</span></li>
+            <li onclick="scrollView(event, '#header)'"><span>header.php</span></li>
+            <li onclick="scrollView(event, '#search')"><span>search.php</span></li>
+            <li onclick="scrollView(event, '#single')"><span>single.php</span></li>
+            <li onclick="scrollView(event, '#page')"><span>page.php</span></li>
+            <li onclick="scrollView(event, '#index')"><span>index.php</span></li>
+            <li onclick="scrollView(event, '#includes')"><span>includes (directory)</span>
               <ul>
-                <li onclick="scrollView(event, '#awards-slider')"><span>awards-slider.php</span></li>
-                <li onclick="scrollView(event, '#testimonial-slider')"><span>testimonial-slider.php</span></li>
-                <li onclick="scrollView(event, '#toggles')"><span>toggles.php</span></li>
+                <li onclick="scrollView(event, '#ajax-actions')"><span>ajax-actions.php</span></li>
+                <li onclick="scrollView(event, '#shortcodes')"><span>shortcodes.php</span></li>
+                <li onclick="scrollView(event, '#theme-changes')"><span>theme-changes.php</span></li>
               </ul>
             </li>
-          <li onclick="scrollView(event, '#blocks')"><span>blocks (directory)</span>
+            <li onclick="scrollView(event, '#pm-safe')"><span>pm-safe (directory)</span></li>
+            <li onclick="scrollView(event, '#template-parts')"><span>template-parts (directory)</span>
               <ul>
-                <li onclick="scrollView(event, '#button')"><span>button.php</span></li>
-                <li onclick="scrollView(event, '#link')"><span>link.php</span></li>
-                <li onclick="scrollView(event, '#text')"><span>text.php</span></li>
+                <li onclick="scrollView(event, '#ada-components')"><span>ada-components (directory)</span>
+                  <ul>
+                    <li onclick="scrollView(event, '#awards-slider')"><span>awards-slider.php</span></li>
+                    <li onclick="scrollView(event, '#testimonial-slider')"><span>testimonial-slider.php</span></li>
+                    <li onclick="scrollView(event, '#toggles')"><span>toggles.php</span></li>
+                  </ul>
+                </li>
+                <li onclick="scrollView(event, '#blocks')"><span>blocks (directory)</span>
+                  <ul>
+                    <li onclick="scrollView(event, '#button')"><span>button.php</span></li>
+                    <li onclick="scrollView(event, '#link')"><span>link.php</span></li>
+                    <li onclick="scrollView(event, '#text')"><span>text.php</span></li>
+                  </ul>
+                </li>
+                <li onclick="scrollView(event, '#blog-styles')"><span>blog-styles.php</span></li>
+                <li onclick="scrollView(event, '#content')"><span>content (directory)</span></li>
+                <li onclick="scrollView(event, '#pages')"><span>pages (directory)</span></li>
+                <li onclick="scrollView(event, '#sections')"><span>sections (directory)</span></li>
+                <li onclick="scrollView(event, '#svgs')"><span>svgs (directory)</span></li>
               </ul>
             </li>
-            <li onclick="scrollView(event, '#blog-styles')"><span>blog-styles.php</span></li>
-            <li onclick="scrollView(event, '#content')"><span>content (directory)</span></li>
-            <li onclick="scrollView(event, '#pages')"><span>pages (directory)</span></li>
-            <li onclick="scrollView(event, '#sections')"><span>sections (directory)</span></li>
-            <li onclick="scrollView(event, '#svgs')"><span>svgs (directory)</span></li>
+            <li onclick="scrollView(event, '#ajax-tempaltes')"><span>AJAX templates</span>
+              <ul>
+                <li onclick="scrollView(event, '#fetch-request')"><span>Fetch request</span></li>
+                <li onclick="scrollView(event, '#iframe')"><span>Iframe</span></li>
+              </ul>
+            </li>
+            <li onclick="scrollView(event, '#webp')"><span>webp (directory)</span></li>
           </ul>
         </li>
-        <li onclick="scrollView(event, '#ajax-tempaltes')"><span>AJAX templates</span>
+        <li onclick="scrollView(event, '#shortcode-instructions')"><span>III. Shortcodes</span>
           <ul>
-            <li onclick="scrollView(event, '#fetch-request')"><span>Fetch request</span></li>
-            <li onclick="scrollView(event, '#iframe')"><span>Iframe</span></li>
+            <li onclick="scrollView(event, '#loading-images')"><span>Loading Images</span></li>
           </ul>
         </li>
-        <li onclick="scrollView(event, '#webp')"><span>webp (directory)</span></li>
+        <li onclick="scrollView(event, '#lazy-loading')"><span>IV. Lazy Loading Shortcodes</span></li>
+        <li onclick="scrollView(event, '#gravity-forms')"><span>V. Gravity Forms Setup</span></li>
+        <li onclick="scrollView(event, '#amp-setup')"><span>VI. Setting Up a Site on AMP</span></li>
+        <li onclick="scrollView(event, '#translations')"><span>VII. Adding Site Translations</span></li>
+        <li onclick="scrollView(event, '#global-considerations')"><span>VIII. Global Considerations</span></li>
       </ul>
-    </li>
-    <li onclick="scrollView(event, '#shortcode-instructions')"><span>III. Shortcodes</span>
-      <ul>
-        <li onclick="scrollView(event, '#loading-images')"><span>Loading Images</span></li>
-      </ul>
-    </li>
-    <li onclick="scrollView(event, '#lazy-loading')"><span>IV. Lazy Loading Shortcodes</span></li>
-    <li onclick="scrollView(event, '#gravity-forms')"><span>V. Gravity Forms Setup</span></li>
-    <li onclick="scrollView(event, '#amp-setup')"><span>VI. Setting Up a Site on AMP</span></li>
-    <li onclick="scrollView(event, '#translations')"><span>VII. Adding Site Translations</span></li>
-    <li onclick="scrollView(event, '#global-considerations')"><span>VIII. Global Considerations</span></li>
-    </ul>
-</div>
+    </div>
 
-<div class="main-content">
-  <h1 style="margin-top: 0;">Nifty 2021 Theme Development Documents</h1>
-  <h2 id="theme-overview">I. Theme Overview</h2>
-  <h3 id="purpose">Purpose</h3>
-  <p>Nifty uses its own, proprietary theme based on the 2021 Wordpress theme. Our child theme is lightweight and intended to be the fastest framework for Wordpress. We have stripped away all of the extra, pre-built-in code and load only code that is necessary, and we code from the ground up to design each website. Ultimately, our purpose with this theme is to marry sexy design with speed using the most simple, development processes possible.</p>
-  <h2 id="theme-file-structure">II. Theme File Structure</h2>
-  <h3 id="style.css">style.css</h3>
-  <p>The style.css file is used exclusively for global, above-the-fold-necessary styles and menu/navigation styles found in the header.php.</p>
-  <p>All other global styles should be added to the footer via the php function add_action(&lsquo;wp_footer&rsquo;) in the themechanges.php file.</p>
-  <p>The style.css comes equipped with several styles.</p>
-  <ol>
-    <li>
-      <p>Site colors, fonts, and font sizes are set by default variables on the root. Other variables may be set in addition to these. Set each CSS variable according to the site design specifics. Don&rsquo;t forget to also update the variables in the media queries. These variables are indicated by comment in the style.css file.</p>
-    </li>
-    <li>
-      <p>Default styles have been set up for ease of developing each site. These styles should by and large be left unchanged unless necessity dictates. These default styles, including font defaults and layout defaults, are indicated by comment in the style.css file.</p>
-    </li>
-    <li>
-      <p>The built-in header.php is ADA accessible. There are default ADA accessible styles included in the style.css file (also indicated by comment within the file). These styles should generally be left untouched if developing an ADA site. Special circumstances may require changing this, but only with prior approval. Otherwise, these styles may be manipulated for use on non-ADA sites.</p>
+    <div class="main-content">
+      <h1 style="margin-top: 0;">Nifty 2021 Theme Development Documents</h1>
+      <h2 id="theme-overview">I. Theme Overview</h2>
+      <h3 id="purpose">Purpose</h3>
+      <p>Nifty uses its own, proprietary theme based on the 2021 Wordpress theme. Our child theme is lightweight and intended to be the fastest framework for Wordpress. We have stripped away all of the extra, pre-built-in code and load only code that is necessary, and we code from the ground up to design each website. Ultimately, our purpose with this theme is to marry sexy design with speed using the most simple, development processes possible.</p>
+      <h2 id="theme-file-structure">II. Theme File Structure</h2>
+      <h3 id="style.css">style.css</h3>
+      <p>The style.css file is used exclusively for global, above-the-fold-necessary styles and menu/navigation styles found in the header.php.</p>
+      <p>All other global styles should be added to the footer via the php function add_action(&lsquo;wp_footer&rsquo;) in the themechanges.php file.</p>
+      <p>The style.css comes equipped with several styles.</p>
       <ol>
         <li>
-          <p>The preferable way to display mobile navigation menus is solely with CSS controlled in the style.css file. By using :checked on input values, we can display or hide the menu on click or on focus events.</p>
-        </li>
-      </ol>
-    </li>
-  </ol>
-  <h3 id="functions">functions.php</h3>
-  <p>The functions.php should remain untouched. Any theme functions that need to be added for a site should be controlled by the theme-changes.php file.</p>
-  <h3 id="page-404">404.php</h3>
-  <p>This page should represent the styles of the site, including a header banner and footer when appropriate. Be sure to change the styles of this page to match the rest of the site, incorporating shortcodes if applicable.</p>
-  <h3 id="archive">archive.php</h3>
-  <p>This page should be changed to reflect theme styles but maintain the integrity of the archive loop.</p>
-  <h3 id="footer">footer.php</h3>
-  <p>All footer HTML components belong in the footer. An extra directory nested under the &ldquo;template-parts&rdquo; directory may also be used by which shortcodes may be generated for the footer if the footer.php file is too long or difficult to manage. This should be the exception.</p>
-  <p>Include other global styles in the footer.php that couldn&rsquo;t go in the style.css file.</p>
-  <h3 id="header">header.php</h3>
-  <p>This file is loaded with the following features:</p>
-  <ol>
-    <li>
-      <p>preload/preconnect urls</p>
-      <ol>
-        <li>
-          <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preloaded. We only self-host Google fonts by downloading either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet in the same /fonts/ directory that calls the fonts. Do NOT set a font-display property. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
-	  <code>
-		<p><' link rel="preload" as="style" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/'></p>
-		<p><' link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css"/'></p>
-	  </code>
-	  <p><strong>/template-parts/fonts/playfair-display.css (change out the css file for the font you are using)</strong></p>
-	  <code>
-		<p>@font-face {</p>
-		<p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
-		<p>&nbsp; font-style: normal;</p>
-		<p>&nbsp; font-weight: 400;</p>
-		<p>&nbsp; src: local(&#39;&#39;),</p>
-		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff2&#39;) format(&#39;woff2&#39;),</p>
-		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff&#39;) format(&#39;woff&#39;);</p>
-		<p>}</p>
-		<p>/* playfair-display-700 - latin */</p>
-		<p>@font-face {</p>
-		<p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
-		<p>&nbsp; font-style: normal;</p>
-		<p>&nbsp; font-weight: 700;</p>
-		<p>&nbsp; src: local(&#39;&#39;),</p>
-		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff2&#39;) format(&#39;woff2&#39;),</p>
-		<p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff&#39;) format(&#39;woff&#39;);</p>
-		<p>}</p>
-	  </code>
-	  <p>Use <a href="https://google-webfonts-helper.herokuapp.com/fonts">this Google-approved resource</a> (though not by Google) to generate the css and woff files you need.</p>
+          <p>Site colors, fonts, and font sizes are set by default variables on the root. Other variables may be set in addition to these. Set each CSS variable according to the site design specifics. Don&rsquo;t forget to also update the variables in the media queries. These variables are indicated by comment in the style.css file.</p>
         </li>
         <li>
-          <p>Any third-party assets being loaded in above-the-fold content should be preconnected.</p>
+          <p>Default styles have been set up for ease of developing each site. These styles should by and large be left unchanged unless necessity dictates. These default styles, including font defaults and layout defaults, are indicated by comment in the style.css file.</p>
         </li>
         <li>
-          <p>All above-the-fold images should be preloaded on the pages where they are being used, including the logo and images used in the background and foreground of header banners.</p>
-        </li>
-        <li>
-          <p>Any first-party resources being loaded in above-the-fold content should be preloaded.</p>
-        </li>
-        <li>
-          <p>Custom fields per page may be used to determine which images should be preloaded.</p>
-        </li>
-      </ol>
-    </li>
-    <li>
-      <p>There is a default script that allows a user to select the navigation menu via keyboard. This is used for ADA purposes and may be removed if ADA is not being implemented on a site.</p>
-    </li>
-    <li>
-      <p>Some header that displays a company logo and menu navigation</p>
-      <ol>
-        <li>
-          <p>Menus should be coded as such:</p>
+          <p>The built-in header.php is ADA accessible. There are default ADA accessible styles included in the style.css file (also indicated by comment within the file). These styles should generally be left untouched if developing an ADA site. Special circumstances may require changing this, but only with prior approval. Otherwise, these styles may be manipulated for use on non-ADA sites.</p>
           <ol>
-            <li style="list-style-type: lower-roman;" aria-level="3">&nbsp;</li>
-          </ol>
-        </li>
-      </ol>
-    </li>
-  </ol>
-  <div align="left">
-    <code>
-      <p>&lt;div class="flex menus"&gt;</p>
-      <p>&lt;input tabindex="-1" type="checkbox" class="mobile-nav-input" id="mobile-nav-input"&gt;</p>
-      <p>&lt;label tabindex="0" class="mobile-nav" for="mobile-nav-input" onkeyup="checkTheBox(event);"&gt;☰&lt;/label&gt;</p>
-      <p>&lt;nav class="main-nav" aria-label="Main Menu"&gt;</p>
-      <p>&lt;?php wp_nav_menu(array(</p>
-      <p>'menu' =&gt; 'Main',</p>
-      <p>'menu_class' &nbsp; &nbsp; =&gt; 'main-menu',</p>
-      <p>)); ?&gt;</p>
-      <p>&lt;/nav&gt;</p>
-      <p>&lt;/div&gt;</p>
-    </code>
-  </div>
-  <ul>
-    <li style="list-style-type: disc;" aria-level="4">
-      <p>The label controls the input. In the style.css, the styles should be able to control the &lt;nav&gt; element using a :checked selector for mobile.</p>
-    </li>
-    <li style="list-style-type: disc;" aria-level="4">
-      <p>Create a menu in the Appearance -&gt; Menus tab. There is no need to register a menu area. Simply call the menu here.</p>
-    </li>
-  </ul>
-  <p>The header.php shouldn&rsquo;t be used for anything else except for extenuating circumstances.</p>
-  <h3 id="search">search.php</h3>
-  <p>This file contains the parent theme&rsquo;s code and should be changed only to represent the styles of the site.</p>
-  <h3 id="single">single.php</h3>
-  <p>This page displays the main blogs and the structure of which should generally be left unchanged, in cluding its styles. Some of the following will need to be changed for each website:</p>
-  <ol>
-    <li>
-      <p>The header background will need to match the style, colors, and feel of the site, but should remain fairly simplistic.</p>
-    </li>
-    <li>
-      <p>Update the social sharing links for each client.</p>
-    </li>
-  </ol>
-  <p>The article body text width should not change. Research went into determining what the width of blog articles should be on desktop, and our blog pages match the standard width of article platforms across the web.</p>
-  <p>For more information on styling individual blog pages, see the <a onclick="scrollView(event, '#blog-styles')">blog-styles.php</a> documentation.</p>
-  <h3 id="page">page.php</h3>
-  <p>This file should not be touched or changed unless there are very extenuating circumstances. It is a simple loop to grab content of a page. The overall styles and content of every page will be handled solely by shortcodes.</p>
-  <h3 id="index">index.php</h3>
-  <p>This file makes two includes calls: 1) to the content-blog.php template and 2) to the blog-styles.php file. The first is explained in detail in <a onclick="scrollView(event, '#content')">content-blog.php</a>, but the main idea is that this is the blog page layout and should not be changed except to add a header that appropriately reflects the design of the site.</p>
-  <p>For more information on styling the main blog page, see the <a onclick="scrollView(event, '#blog-styles')">blog-styles.php</a> documentation.</p>
-  <h3 id="includes">includes (directory)</h3>
-  <h4 id="ajax-actions">ajax-actions.php</h4>
-  <p>This was added for ajaxing forms and other server calls, generally for third-parties. It isn&rsquo;t being utilized by the theme, but it can be included in the functions.php as the only exception to editing that file. Use this file and add actions to it only when necessary.</p>
-  <h4 id="shortcodes">shortcodes.php</h4>
-  <p>This is where all the shortcodes will be generated by use of the site. There are three specific sections of shortcodes:</p>
-  <ol>
-    <li>
-      <p>ADA-specific shortcodes: These shortcodes come with the theme by default and should remain unchanged. These shortcodes reference pre-built, ADA components, including an awards slider, testimonial slider, and an FAQ toggle/accordion. These may be used and customized when a site is ADA compliant, but the structure/HTML/JS should not be manipulated. For more information, see the section on <a onclick="scrollView(event, '#ada-components')">ada-components directory</a>.</p>
-    </li>
-    <li>
-      <p>Standard shortcodes: These are out-of-the-box, theme-ready shortcodes that are general to almost every site. Some sections may vary from site site to site, but these shortcodes may be used easily and adapted. The standard shortcodes consist of home-specific and internal-specific shortcode designations.</p>
-    </li>
-    <li>
-      <p>Custom shortcodes: These are any additional shortcodes that may be needed for the site that don&rsquo;t fit within the ADA-specific and standard shortcodes. If a new design or layout is needed, custom shortcodes may and should generously be used. Any shortcode which is outside the realm of &ldquo;internal&rdquo; or &ldquo;home&rdquo; will be marked &ldquo;custom&rdquo; instead and will call shortcodes in the &ldquo;custom&rdquo; directory under template-parts/sections/.</p>
-    </li>
-  </ol>
-  <p>Shortcodes should always include a php file in the template-parts directory. The standard shortcode for the Nifty 2021 theme should look like this if it is not a wrapping shortcode:</p>
-  <div align="left">
-    <code>
-      <p>function awards_slider($atts){</p>
-      <p>ob_start();</p>
-      <p>include(locate_template( 'template-parts/ada-components/awards-slider.php' ));</p>
-      <p>return ob_get_clean();</p>
-      <p>}</p>
-      <p>add_shortcode( 'awards_slider' , 'awards_slider' );</p>
-    </code>
-  </div>
-  <p>Or this if it is a wrapping shortcode:</p>
-  <div align="left">
-    <code>
-      <p>function awards_slider($atts, $content=null){</p>
-      <p>ob_start();</p>
-      <p>include(locate_template( 'template-parts/ada-components/awards-slider.php' ));</p>
-      <p>return ob_get_clean();</p>
-      <p>}</p>
-      <p>add_shortcode( 'AWARDS_SLIDER' , 'awards_slider' );</p>
-    </code>
-  </div>
-  <p>If it is a custom shortcode, it will look like this:</p>
-  <div align="left">
-    <code>
-      <p>function custom_awards_slider($atts, $content=null){</p>
-      <p>ob_start();</p>
-      <p>include(locate_template( 'template-parts/sections/customs/custom-awards-slider.php' ));</p>
-      <p>return ob_get_clean();</p>
-      <p>}</p>
-      <p>add_shortcode( 'custom_awards_slider' , 'custom_awards_slider' );</p>
-    </code>
-  </div>
-  <p>If it is a custom shortcode is a wrapping shortcode, it will look like this:</p>
-  <div align="left">
-    <code>
-      <p>function custom_awards_slider($atts, $content=null){</p>
-      <p>ob_start();</p>
-      <p>include(locate_template( 'template-parts/sections/customs/custom-awards-slider.php' ));</p>
-      <p>return ob_get_clean();</p>
-      <p>}</p>
-      <p>add_shortcode( 'CUSTOM_AWARDS_SLIDER' , 'custom_awards_slider' );</p>
-    </code>
-  </div>
-  <p>All shortcode attributes are defined within the php files themselves included in these calls. In the example above, &ldquo;awards-slider.php&rdquo; with be set up with the shortcode_atts function to define the attributes needed for that shortcode, if any.</p>
-  <p>Wrapping shortcodes, for sake of easy identification, should be all caps.</p>
-  <h4 id="theme-changes">theme-changes.php</h4>
-  <p>This file serves as the main way to manipulate the theme and keep the functions.php clean. The file is segmented as so:</p>
-  <ol>
-    <li>
-      <p>The first section &ldquo;child_deregister_parent&rdquo; is to deregister all scripts and styles being brought in by the parent. The Nifty 2021 theme strips away jQuery, this library may be reinstated by uncommenting the following two lines:</p>
-    </li>
-  </ol>
-  <div align="left">
-    <code>
-      <p>// wp_register_script('jquery', '<a href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js</a>');</p>
-      <p>// wp_enqueue_script('jquery');</p>
-    </code>
-  </div>
-  <ol start="2">
-    <li>
-      <p>The second section &ldquo;remove_twenty_twenty_one_add_sub_menu_toggle&rdquo; disables the walker menu built into the parent theme. This function should be left untouched.</p>
-    </li>
-    <li>
-      <p>The third section &ldquo;disable_emojis&rdquo; disables and removes emoji wordpress emoji support. Unicodes still work fine. This function should be left untouched.</p>
-    </li>
-    <li>
-      <p>The fourth section &ldquo;add_data_url_for_lazy_load&rdquo; adds filters to Wordpress-generated images to allow for our lazy loading processes. The 2021 theme, however, includes extraneous code for images where this function is currently unnecessary, but it will remain for future iterations of the theme. It should be left untouched.</p>
-    </li>
-    <li>
-      <p>The fifth section &ldquo;edit_iframe_srcs&rdquo; allows iframes loaded in php to be lazyloaded with our processes. This should be left untouched.</p>
-    </li>
-    <li>
-      <p>The sith section &ldquo;edit_search_form&rdquo; allows us to change the search form submit button text when utilized. Change this as needed.</p>
-    </li>
-    <li>
-      <p>The seventh section calls three php files to include PM-safe scripts into the php. More on this in the <a onclick="scrollView(event, '#pm-safe')">PM-safe directory</a> documentation.</p>
-    </li>
-    <li>
-      <p>The eighth section &ldquo;theme_foot_scripts&rdquo; contains any scripts we need to add to the footer as admins. Out of the box, we only have our lazyloading images, iframes, and backgrounds script, but more may and should be added here as necessary.</p>
-    </li>
-    <li>
-      <p>The ninth section &ldquo;tgm_io_shortcode_empty_paragraph_fix&rdquo;, &ldquo;new_excerpt_more&rdquo;, and the excerpt-length function should be left untouched and simply add functionality to the site to make coding easier.</p>
-    </li>
-    <li>
-      <p>The last section &ldquo;myplugin_ajaxurl&rdquo; is used to AJAX in shortcodes and may be used for ajax calls.</p>
-    </li>
-  </ol>
-  <h3 id="pm-safe">pm-safe (directory)</h3>
-  <p>The pm-safe directory contains three files intended to be used as safe, non-breakable php files for site managers who are not developers, also known as project managers, or PMs. These files are where they can add scripts of their own accord. They are as follows:</p>
-  <ol>
-    <li>
-      <p>after-body-scripts.php &ndash; add scripts directly after the opening &lt;body&gt; tag. An arbitrary hook in the header.php allows for this.</p>
-    </li>
-    <li>
-      <p>footer-scripts.php &ndash; add scripts directly before the closing &lt;/body&gt; tag. This file is being hooked into the wp_footer.</p>
-    </li>
-    <li>
-      <p>header-scripts.php &ndash; add scripts right before the closing &lt;/head&gt; tag. This file is being hooked into the wp_head.</p>
-    </li>
-  </ol>
-  <h3 id="template-parts">template-parts (directory)</h3>
-  <p>The template-parts directory is where all of the stylistic elements, including shortcode php file references, are stored. This directory is broken into several segments as follows:</p>
-  <h4 id="ada-components">ada-components (directory)</h4>
-  <p>This directory houses the pre-built, ADA site components pages. ADA shortcodes are generated in the shortcodes.php file referencing these files:</p>
-  <h5 id="awards-slider">awards-slider.php</h5>
-  <p>This is an ADA component which displays awards and should be left untouched unless adding/subtracting awards or adjusting the CSS color scheme to match the rest of the site.</p>
-  <h5 id="testimonial-slider">testimonial-slider.php</h5>
-  <p>This is an ADA component and for a responsive testimonial slider. The number of slides and the testimonials + the name of the person may be adjusted, and the CSS color and background may change. The file JS should not be changed, however.</p>
-  <h5 id="toggles">toggles.php</h5>
-  <p>The toggles are general and reflect the variable colors in the style.css file. These should generally be left untouched.</p>
-  <h4 id="blocks">blocks (directory)</h4>
-  <p>This directory houses useful, reusable blocks of code that can be used throughout the site in different contexts. If used, these will need to be set up in the shortcodes.php file. They may be set up and used according to each site design and are as follows:</p>
-  <h5 id="button">button.php</h5>
-  <p>Style buttons in a certain way to be used throughout the site design.</p>
-  <h5 id="link">link.php</h5>
-  <p>If some links should work/act in a certain way on the site, use this php template file to display them.</p>
-  <h5 id="text">text.php</h5>
-  <p>If some stylized text is used over and over, consider using this file via shortcode to generate it.</p>
-  <h4 id="blog-styles">blog-styles.php</h4>
-  <p>This file incorporates all of the styles of the index.php file and the single.php file. The key to the overall blog page and individual posts is to keep the styles as simple as possible and the look to be the same as all sites on the Nifty 2021 theme.</p>
-  <p>Colors, header banners, and other site-design-specific CSS can change and be added, but it should strive for simplicity and overall uniformity to all other sites on the theme.</p>
-  <p>There is only one piece of CSS code which should NOT be changed: the width of the content. Research went into deciding the main content text width as it stands in the theme and should not be changed unless requested by the client or director of design.</p>
-  <h4 id="content">content (directory)</h4>
-  <p>This directory houses the necessary php files which render blogs, content, and no content when a loop is called. The files included in the content directory are:</p>
-  <ol>
-    <li>
-      <p>content-blog.php</p>
-    </li>
-    <li>
-      <p>content-excerpt.php</p>
-    </li>
-    <li>
-      <p>content-none.php</p>
-    </li>
-    <li>
-      <p>content-page.php</p>
-    </li>
-    <li>
-      <p>content-single.php</p>
-    </li>
-    <li>
-      <p>content.php</p>
-    </li>
-  </ol>
-  <p>Each of these files is responsible for displaying different content structures and should usually be left untouched unless needed.</p>
-  <h4 id="pages">pages (directory)</h4>
-  <p>Sometimes, some pages will have their own, dedicated content and shortcodes. It is cleaner to incorporate those into their own directories and php files to keep the code organized.</p>
-  <p>For example, many contact pages do not follow the same layout as other pages. Within the pages directory, you could create a contact.php to solve this issue. If a team page or practice areas page on the site has several shortcodes not used anywhere else, it may be advantageous to set up a team directory or practice-areas directory within the pages directory and create shortcodes which utilize php pages within these directories.</p>
-  <p>To illustrate, the file structures of the example above may look similar to this:</p>
-  <ul>
-    <li style="list-style-type: disc;" aria-level="1">
-      <p>template-parts</p>
-      <ul>
-        <li style="list-style-type: disc;">
-          <p>pages</p>
-          <ul>
-            <li style="list-style-type: disc;" aria-level="3">
-              <p>team (directory)</p>
-              <ul>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>team-header.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>team-photos.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>team-awards.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>team-members.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>team-bios.php</p>
-                </li>
-              </ul>
-            </li>
-            <li style="list-style-type: disc;" aria-level="3">
-              <p>practice-areas (directory)</p>
-              <ul>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>indiv-pa.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>pa-header.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>pa-contact.php</p>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <h4 id="sections">sections (directory)</h4>
-  <p>This directory contains sub-directories and files that pertain to the homepage shortcodes, internal page shortcodes, and custom shortcodes respectively.</p>
-  <p>If creating shortcodes that don&rsquo;t belong to one specific page, they belong in this directory.</p>
-  <p>The following illustrates the file system and organization of the sections directory:</p>
-  <ul>
-    <li style="list-style-type: disc;" aria-level="1">
-      <p>template-parts</p>
-      <ul>
-        <li style="list-style-type: disc;">
-          <p>sections</p>
-          <ul>
-            <li style="list-style-type: disc;" aria-level="3">
-              <p>homepage</p>
-              <ul>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-awards.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-banner.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-contact.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-cta.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-news.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-pas.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-results.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-social.php&nbsp;</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>home-team.php&nbsp;</p>
-                </li>
-              </ul>
-            </li>
-            <li style="list-style-type: disc;" aria-level="3">
-              <p>internal</p>
-              <ul>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>internal-banner.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>internal-cta.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>internal-fullwidth.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>internal-pas.php</p>
-                </li>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>internal-sidebar.php</p>
-                </li>
-              </ul>
-            </li>
-            <li style="list-style-type: disc;" aria-level="3">
-              <p>custom</p>
-              <ul>
-                <li style="list-style-type: disc;" aria-level="4">
-                  <p>(custom php pages for custom shortcodes)</p>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <p>Files added to the &ldquo;custom&rdquo; directory may also be segmented into different directories for ease of access and better organization. Each&nbsp;</p>
-  <p>Not every pre-created file will be used for each site design. These are provided out-of-the-box for 2 reasons:</p>
-  <ol>
-    <li>
-      <p>To make development easier and faster to avoid needing to create and upload the most common shortcode files and</p>
-    </li>
-    <li>
-      <p>To ensure consistency in naming across all of our sites. Our goal is for project managers to easily identify which PHP page controls the shortcodes for which they want to change content.</p>
-    </li>
-  </ol>
-  <h4 id="svgs">svgs (directory)</h4>
-  <p>This directory is equipped with php pages that contain svg icons.</p>
-  <p>There are six social icons that come with the theme that may be used, and any more svgs necessary for the site may also be added in this sub-directory.</p>
-  <p>The best way to use these svgs is by using the file_get_contents() php method. It should NOT be in a server call. For example, it should look similar to this:</p>
-  <div align="left">
-    <code>
-      <p>&lt;?= file_get_contents( locate_template('/template-parts/svgs/instagram.php')); ?&gt;</p>
-    </code>
-  </div>
-  <p>The styles for the included svgs should be controlled by their parent php page/shortcode which is using them.</p>
-  <h3 id="ajax-templates">AJAX templates / Shortcode Lazy Loading</h3>
-  <p>These are template files that should be created for lazyloading shortcodes and other content that needs to be hooked into the wordpress core. The following demonstrates how to set up the file system for lazy loading a shortcode.</p>
-  <p>An AJAX php file will exist only in the root.</p>
-  <p>The file name should look like this, with capitalization:</p>
-  <p>AJAX-descriptionofshortcode.php</p>
-  <p>The inside of the file should then look similar to this:</p>
-  <div align="left">
-    <code>
-      <p>&lt;?php</p>
-      <p>/*</p>
-      <p>&nbsp;*</p>
-      <p>&nbsp;* Template Name: AJAX Form 1</p>
-      <p>&nbsp;*&nbsp;</p>
-      <p>&nbsp;*/</p>
-      <p>?&gt;</p>
-      <p>&lt;?= apply_shortcodes('[gravityform id="1" title="false" description="false" ajax="false"]'); ?&gt;</p>
-    </code>
-  </div>
-  <p>Note: It is important to set the ajax value to &ldquo;false&rdquo; or the lazy loading will not work for Gravity Forms.</p>
-  <p>Make the template name:</p>
-  <p>AJAX (description of the shortcode)</p>
-  <p>Echo a do_shortcode() or apply_shortcodes() method with the shortcode inside.</p>
-  <p>Create a wordpress page that should be named as follows</p>
-  <p>AJAX: (same name you used for the template file)</p>
-  <p>Set that page&rsquo;s template to the AJAX template you just created.</p>
-  <p>Be sure to noindex / nofollow the page in Yoast.</p>
-  <p>Save the page.</p>
-  <p>From here, you have one of two options:</p>
-  <ol>
-    <li>
-      <p>You can use a fetch request or</p>
-    </li>
-    <li>
-      <p>You can iframe the shortcode.</p>
-    </li>
-  </ol>
-  <h4 id="fetch-request">Fetch request</h4>
-  <p>If you are using gravity forms, like the example above, you will need to make a fetch request.</p>
-  <p>Some other shortcodes may be loaded this way too, but others may need to be called by an iframe.</p>
-  <p>To make a fetch request, go into the shortcode php file where you want to make the AJAX call. In this example, we are changing the home-contact.php file.</p>
-  <p>Add a fetch request to the AJAX page you created and it will output the shortcode as expected:</p>
-  <div align="left">
-    <code>
-	    <p>&lt;script&gt;</p>
-	    <p>window.addEventListener("scroll", loadForm);</p>
-	    <p>window.addEventListener("load", loadForm);</p>
-	    <p>let formLoaded = 0;</p>
-
-	    <p>function loadForm(){</p>
-	    <p>let sectionTop = document.querySelector(".home-contact").getBoundingClientRect().top;</p>
-	    <p>if(sectionTop - window.innerHeight &lt; 150 && formLoaded == 0){</p>
-	    <p>fetch("&lt;?= home_url() . '/ajax-form/'; ?&gt;")</p>
-	    <p>.then(response =&gt; response.text())</p>
-	    <p>.then(data =&gt; {</p>
-	    <p>document.querySelector(".home-contact .form-section .form-container").innerHTML = data;</p>
-	    <p>&lt;?php </p>
-	    <p>global $post;</p>
-	    <p>$post_slug = $post-&gt;post_name;</p>
-	    <p>?&gt;</p>
-						<p>document.querySelector(".home-contact form").setAttribute("action", "/&lt;?= $post_slug; ?&gt;/#gf_1");</p>
-	    <p>let newInput = document.createElement("input");</p>
-						<p>newInput.setAttribute("style", "padding: 15px 10%; margin-top: 8px; text-transform: uppercase;font-family: var(--text-font); font-weight: 700; color: #fff; background: transparent; border-radius: 6px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; border: none; outline: none; user-select: none; color: transparent;");</p>
-	    <p>newInput.setAttribute("class", "over-submit");</p>
-	    <p>newInput.setAttribute("onclick", "checkLabels()");</p>
-	    <p>document.querySelector(".gform_footer.top_label").appendChild(newInput);</p>
-	    <p>});</p>
-	    <p>formLoaded++;</p>
-	    <p>}</p>
-	    <p>}</p>
-
-	    <p>function checkLabels(){</p>
-	    <p>let alerted = 0;</p>
-				<p>document.querySelectorAll(`#gform_1 input[aria-required="true"], #gform_1 textarea[aria-required="true"]`).forEach(item=&gt;{</p>
-	    <p>if(!item.value){</p>
-	    <p>alerted++;</p>
-	    <p>}</p>
-	    <p>});</p>
-	    <p>if(alerted &gt; 0){</p>
-					<p>alert("Please fill out all required fields. \n Required fields are marked with an asterisk ( * )");</p>
-	    <p>}else{</p>
-	    <p>document.querySelector(".over-submit").remove();</p>
-	    <p>document.querySelector("#gform_submit_button_1").click();</p>
-	    <p>}</p>
-	    <p>}</p>
-	    <p>&lt;/script&gt;</p>
-
-	    <p>&lt;script&gt;</p>
-	    <p>window.addEventListener("load", fadeinContact);</p>
-	    <p>window.addEventListener("scroll", fadeinContact);</p>
-	    <p>function fadeinContact(){</p>
-				<p>let scrollFromTop = document.querySelector(".home-contact .lion-head").getBoundingClientRect().top;</p>
-	    <p>if(scrollFromTop &lt; window.innerHeight * .66){</p>
-	    <p>document.querySelector(".home-contact .lion-head").classList.add("active");</p>
-	    <p>}</p>
-	    <p>}</p>
-	    <p>&lt;/script&gt;</p>
-    </code>
-  </div>
-  <p>The fetch request request is made on scroll or load if the form container is 150px from the bottom of the screen. The fetch request is made to the newly created AJAX page, a new element is created to serve as a validation element, and the function check labels is set to ensure that the validation element works and a form can be submitted.</p>
-  <h4 id="iframe">Iframe</h4>
-  <p>Some shortcodes may not work if they are being called via a fetch request. In this case, we should be able to lazyload the shortcode by iframe instead.</p>
-  <p>If using an iframe, it should look like this:</p>
-  <div align="left">
-    <code>
-      <p>&lt;section class="home-social section-padding"&gt;</p>
-      <p>&lt;iframe width=&rdquo;700&rdquo; height=&rdquo;500px&rdquo; data-url="<a href="https://smstrialstagin.wpengine.com/ajax-instagram/">https://smstrialstagin.wpengine.com/ajax-instagram/</a>"&gt;&lt;/iframe&gt;</p>
-      <p>&lt;/section&gt;</p>
-    </code>
-  </div>
-  <p>Adjust the width and height to compensate for CLS and maintain aspect ratio, depending on the shortcode source you are loading.</p>
-  <h3 id="webp">webp (directory)</h3>
-  <p>This directory is where we add used to add webp images. Previous Wordpress media library functionality didn't support webp images, but newer versions do. If a site was coded before this .webp functionality, this file will still be used by the site in some instances, but all further .webp images can and should be uploaded to the media library as any other image would require.</p>
-  <p>The file blank.php exists simply so that the file will appear in the Wordpress editor, though the webp images won&rsquo;t appear in the file &ndash; these will only be accessible/visible via FTP.</p>
-  <p>For instruction on how to use webp images and when, see <a onclick="scrollView(event, '#loading-images')">images</a>.</p>
-  <h2 id="shortcode-instructions">III. Shortcodes</h2>
-  <p>The following are the standards we set for shortcode creation:</p>
-  <ol>
-    <li>
-      <p>Each section of the webdesign is its own shortcode</p>
-    </li>
-    <li>
-      <p>The shortcode is created in the theme editor under the /includes/shortcodes.php directory</p>
-    </li>
-    <li>
-      <p>The shortcode content (HTML/CSS/JS) will be created in separate php files</p>
-      <ol>
-        <li>
-          <p>New php files can be created/uploaded via FTP</p>
-        </li>
-        <li>
-          <p>Shortcode $atts will be kept inside these files</p>
-        </li>
-      </ol>
-    </li>
-    <li>
-      <p>The shortcode name, the php file name which the shortcode references, and the section class should all be the same</p>
-      <ol>
-        <li>
-          <p>example:</p>
-          <ol>
-            <li style="list-style-type: lower-roman;" aria-level="3">
-              <p>shortcode: [home_banner]</p>
-            </li>
-            <li style="list-style-type: lower-roman;" aria-level="3">
-              <p>php page: home-banner.php</p>
-            </li>
-            <li style="list-style-type: lower-roman;" aria-level="3">
-              <p>section class: &lt;section class=&rdquo;home-banner&rdquo;&gt;...&lt;/section&gt;</p>
+            <li>
+              <p>The preferable way to display mobile navigation menus is solely with CSS controlled in the style.css file. By using :checked on input values, we can display or hide the menu on click or on focus events.</p>
             </li>
           </ol>
         </li>
       </ol>
-    </li>
-    <li>
-      <p>Any iframe in the php pages should be loaded as follows:</p>
+      <h3 id="functions">functions.php</h3>
+      <p>The functions.php should remain untouched. Any theme functions that need to be added for a site should be controlled by the theme-changes.php file.</p>
+      <h3 id="page-404">404.php</h3>
+      <p>This page should represent the styles of the site, including a header banner and footer when appropriate. Be sure to change the styles of this page to match the rest of the site, incorporating shortcodes if applicable.</p>
+      <h3 id="archive">archive.php</h3>
+      <p>This page should be changed to reflect theme styles but maintain the integrity of the archive loop.</p>
+      <h3 id="footer">footer.php</h3>
+      <p>All footer HTML components belong in the footer. An extra directory nested under the &ldquo;template-parts&rdquo; directory may also be used by which shortcodes may be generated for the footer if the footer.php file is too long or difficult to manage. This should be the exception.</p>
+      <p>Include other global styles in the footer.php that couldn&rsquo;t go in the style.css file.</p>
+      <h3 id="header">header.php</h3>
+      <p>This file is loaded with the following features:</p>
       <ol>
         <li>
-          <p>&lt;iframe data-url=&rdquo;#&rdquo; width=&rdquo;&rdquo; height=&rdquo;&rdquo; anyOtherAttributeNeeded&gt;&lt;/iframe&gt;</p>
+          <p>preload/preconnect urls</p>
+          <ol>
+            <li>
+              <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preloaded. We only self-host Google fonts by downloading either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet in the same /fonts/ directory that calls the fonts. Do NOT set a font-display property. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
+              <code>
+                <p>
+                  <' link rel="preload" as="style" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" /'>
+                </p>
+                <p>
+                  <' link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" /'>
+                </p>
+              </code>
+              <p><strong>/template-parts/fonts/playfair-display.css (change out the css file for the font you are using)</strong></p>
+              <code>
+                <p>@font-face {</p>
+                <p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
+                <p>&nbsp; font-style: normal;</p>
+                <p>&nbsp; font-weight: 400;</p>
+                <p>&nbsp; src: local(&#39;&#39;),</p>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff2&#39;) format(&#39;woff2&#39;),</p>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-regular.woff&#39;) format(&#39;woff&#39;);</p>
+                <p>}</p>
+                <p>/* playfair-display-700 - latin */</p>
+                <p>@font-face {</p>
+                <p>&nbsp; font-family: &#39;Playfair Display&#39;;</p>
+                <p>&nbsp; font-style: normal;</p>
+                <p>&nbsp; font-weight: 700;</p>
+                <p>&nbsp; src: local(&#39;&#39;),</p>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff2&#39;) format(&#39;woff2&#39;),</p>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp;url(&#39;/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display/playfair-display-v22-latin-700.woff&#39;) format(&#39;woff&#39;);</p>
+                <p>}</p>
+              </code>
+              <p>Use <a href="https://google-webfonts-helper.herokuapp.com/fonts">this Google-approved resource</a> (though not by Google) to generate the css and woff files you need.</p>
+            </li>
+            <li>
+              <p>Any third-party assets being loaded in above-the-fold content should be preconnected.</p>
+            </li>
+            <li>
+              <p>All above-the-fold images should be preloaded on the pages where they are being used, including the logo and images used in the background and foreground of header banners.</p>
+            </li>
+            <li>
+              <p>Any first-party resources being loaded in above-the-fold content should be preloaded.</p>
+            </li>
+            <li>
+              <p>Custom fields per page may be used to determine which images should be preloaded.</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>There is a default script that allows a user to select the navigation menu via keyboard. This is used for ADA purposes and may be removed if ADA is not being implemented on a site.</p>
+        </li>
+        <li>
+          <p>Some header that displays a company logo and menu navigation</p>
+          <ol>
+            <li>
+              <p>Menus should be coded as such:</p>
+              <ol>
+                <li style="list-style-type: lower-roman;" aria-level="3">&nbsp;</li>
+              </ol>
+            </li>
+          </ol>
         </li>
       </ol>
-    </li>
-    <li>
-      <p>Images</p>
+      <div align="left">
+        <code>
+          <p>&lt;div class="flex menus"&gt;</p>
+          <p>&lt;input tabindex="-1" type="checkbox" class="mobile-nav-input" id="mobile-nav-input"&gt;</p>
+          <p>&lt;label tabindex="0" class="mobile-nav" for="mobile-nav-input" onkeyup="checkTheBox(event);"&gt;☰&lt;/label&gt;</p>
+          <p>&lt;nav class="main-nav" aria-label="Main Menu"&gt;</p>
+          <p>&lt;?php wp_nav_menu(array(</p>
+          <p>'menu' =&gt; 'Main',</p>
+          <p>'menu_class' &nbsp; &nbsp; =&gt; 'main-menu',</p>
+          <p>)); ?&gt;</p>
+          <p>&lt;/nav&gt;</p>
+          <p>&lt;/div&gt;</p>
+        </code>
+      </div>
+      <ul>
+        <li style="list-style-type: disc;" aria-level="4">
+          <p>The label controls the input. In the style.css, the styles should be able to control the &lt;nav&gt; element using a :checked selector for mobile.</p>
+        </li>
+        <li style="list-style-type: disc;" aria-level="4">
+          <p>Create a menu in the Appearance -&gt; Menus tab. There is no need to register a menu area. Simply call the menu here.</p>
+        </li>
+      </ul>
+      <p>The header.php shouldn&rsquo;t be used for anything else except for extenuating circumstances.</p>
+      <h3 id="search">search.php</h3>
+      <p>This file contains the parent theme&rsquo;s code and should be changed only to represent the styles of the site.</p>
+      <h3 id="single">single.php</h3>
+      <p>This page displays the main blogs and the structure of which should generally be left unchanged, in cluding its styles. Some of the following will need to be changed for each website:</p>
       <ol>
         <li>
-          <p>See the <a onclick="scrollView(event, '#loading-images')">images</a> sub-section.</p>
+          <p>The header background will need to match the style, colors, and feel of the site, but should remain fairly simplistic.</p>
+        </li>
+        <li>
+          <p>Update the social sharing links for each client.</p>
         </li>
       </ol>
-    </li>
-    <li>
-      <p>Wrap all styles and scripts associated with the shortcode in a php function and hook the function into the wp_footer unless it is above-the-fold content. If that is the case, load the scripts and styles before the section to avoid FOUT.</p>
-    </li>
-    <li>
-      <p>All internal links must use the following syntax:</p>
+      <p>The article body text width should not change. Research went into determining what the width of blog articles should be on desktop, and our blog pages match the standard width of article platforms across the web.</p>
+      <p>For more information on styling individual blog pages, see the <a onclick="scrollView(event, '#blog-styles')">blog-styles.php</a> documentation.</p>
+      <h3 id="page">page.php</h3>
+      <p>This file should not be touched or changed unless there are very extenuating circumstances. It is a simple loop to grab content of a page. The overall styles and content of every page will be handled solely by shortcodes.</p>
+      <h3 id="index">index.php</h3>
+      <p>This file makes two includes calls: 1) to the content-blog.php template and 2) to the blog-styles.php file. The first is explained in detail in <a onclick="scrollView(event, '#content')">content-blog.php</a>, but the main idea is that this is the blog page layout and should not be changed except to add a header that appropriately reflects the design of the site.</p>
+      <p>For more information on styling the main blog page, see the <a onclick="scrollView(event, '#blog-styles')">blog-styles.php</a> documentation.</p>
+      <h3 id="includes">includes (directory)</h3>
+      <h4 id="ajax-actions">ajax-actions.php</h4>
+      <p>This was added for ajaxing forms and other server calls, generally for third-parties. It isn&rsquo;t being utilized by the theme, but it can be included in the functions.php as the only exception to editing that file. Use this file and add actions to it only when necessary.</p>
+      <h4 id="shortcodes">shortcodes.php</h4>
+      <p>This is where all the shortcodes will be generated by use of the site. There are three specific sections of shortcodes:</p>
       <ol>
         <li>
-          <p>&lt;a href=&rdquo;get_permalink($id); ?&gt;&rdquo;&gt;&lt;/a&gt;</p>
+          <p>ADA-specific shortcodes: These shortcodes come with the theme by default and should remain unchanged. These shortcodes reference pre-built, ADA components, including an awards slider, testimonial slider, and an FAQ toggle/accordion. These may be used and customized when a site is ADA compliant, but the structure/HTML/JS should not be manipulated. For more information, see the section on <a onclick="scrollView(event, '#ada-components')">ada-components directory</a>.</p>
+        </li>
+        <li>
+          <p>Standard shortcodes: These are out-of-the-box, theme-ready shortcodes that are general to almost every site. Some sections may vary from site site to site, but these shortcodes may be used easily and adapted. The standard shortcodes consist of home-specific and internal-specific shortcode designations.</p>
+        </li>
+        <li>
+          <p>Custom shortcodes: These are any additional shortcodes that may be needed for the site that don&rsquo;t fit within the ADA-specific and standard shortcodes. If a new design or layout is needed, custom shortcodes may and should generously be used. Any shortcode which is outside the realm of &ldquo;internal&rdquo; or &ldquo;home&rdquo; will be marked &ldquo;custom&rdquo; instead and will call shortcodes in the &ldquo;custom&rdquo; directory under template-parts/sections/.</p>
         </li>
       </ol>
-    </li>
-  </ol>
-  <h3 id="loading-images">Loading Images</h3>
-  <p>Shortcodes with above-the-fold images should be loaded with a &lt;picture&gt; tag. The sources should be webp formats with jpg/png fallbacks, as such:</p>
-  <div align="left">
-    <code>
-      <p>&lt;picture class="lion-bg"&gt;</p>
-      <p>&lt;source media="(min-width: 911px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header.webp'; ?&gt;" type="image/webp"&gt;</p>
-      <p>&lt;source media="(max-width: 910px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header-sm.webp'; ?&gt;" type="image/webp"&gt;</p>
-      <p>&lt;source media="(max-width: 910px)" srcset="&lt;?= wp_get_attachment_image_src(909, 'full')[0]; ?&gt;" type="image/jpg"&gt;</p>
-      <p>&lt;img src="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head"/&gt;</p>
-      <p>&lt;/picture&gt;</p>
-    </code>
+      <p>Shortcodes should always include a php file in the template-parts directory. The standard shortcode for the Nifty 2021 theme should look like this if it is not a wrapping shortcode:</p>
+      <div align="left">
+        <code>
+          <p>function awards_slider($atts){</p>
+          <p>ob_start();</p>
+          <p>include(locate_template( 'template-parts/ada-components/awards-slider.php' ));</p>
+          <p>return ob_get_clean();</p>
+          <p>}</p>
+          <p>add_shortcode( 'awards_slider' , 'awards_slider' );</p>
+        </code>
+      </div>
+      <p>Or this if it is a wrapping shortcode:</p>
+      <div align="left">
+        <code>
+          <p>function awards_slider($atts, $content=null){</p>
+          <p>ob_start();</p>
+          <p>include(locate_template( 'template-parts/ada-components/awards-slider.php' ));</p>
+          <p>return ob_get_clean();</p>
+          <p>}</p>
+          <p>add_shortcode( 'AWARDS_SLIDER' , 'awards_slider' );</p>
+        </code>
+      </div>
+      <p>If it is a custom shortcode, it will look like this:</p>
+      <div align="left">
+        <code>
+          <p>function custom_awards_slider($atts, $content=null){</p>
+          <p>ob_start();</p>
+          <p>include(locate_template( 'template-parts/sections/customs/custom-awards-slider.php' ));</p>
+          <p>return ob_get_clean();</p>
+          <p>}</p>
+          <p>add_shortcode( 'custom_awards_slider' , 'custom_awards_slider' );</p>
+        </code>
+      </div>
+      <p>If it is a custom shortcode is a wrapping shortcode, it will look like this:</p>
+      <div align="left">
+        <code>
+          <p>function custom_awards_slider($atts, $content=null){</p>
+          <p>ob_start();</p>
+          <p>include(locate_template( 'template-parts/sections/customs/custom-awards-slider.php' ));</p>
+          <p>return ob_get_clean();</p>
+          <p>}</p>
+          <p>add_shortcode( 'CUSTOM_AWARDS_SLIDER' , 'custom_awards_slider' );</p>
+        </code>
+      </div>
+      <p>All shortcode attributes are defined within the php files themselves included in these calls. In the example above, &ldquo;awards-slider.php&rdquo; with be set up with the shortcode_atts function to define the attributes needed for that shortcode, if any.</p>
+      <p>Wrapping shortcodes, for sake of easy identification, should be all caps.</p>
+      <h4 id="theme-changes">theme-changes.php</h4>
+      <p>This file serves as the main way to manipulate the theme and keep the functions.php clean. The file is segmented as so:</p>
+      <ol>
+        <li>
+          <p>The first section &ldquo;child_deregister_parent&rdquo; is to deregister all scripts and styles being brought in by the parent. The Nifty 2021 theme strips away jQuery, this library may be reinstated by uncommenting the following two lines:</p>
+        </li>
+      </ol>
+      <div align="left">
+        <code>
+          <p>// wp_register_script('jquery', '<a href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js</a>');</p>
+          <p>// wp_enqueue_script('jquery');</p>
+        </code>
+      </div>
+      <ol start="2">
+        <li>
+          <p>The second section &ldquo;remove_twenty_twenty_one_add_sub_menu_toggle&rdquo; disables the walker menu built into the parent theme. This function should be left untouched.</p>
+        </li>
+        <li>
+          <p>The third section &ldquo;disable_emojis&rdquo; disables and removes emoji wordpress emoji support. Unicodes still work fine. This function should be left untouched.</p>
+        </li>
+        <li>
+          <p>The fourth section &ldquo;add_data_url_for_lazy_load&rdquo; adds filters to Wordpress-generated images to allow for our lazy loading processes. The 2021 theme, however, includes extraneous code for images where this function is currently unnecessary, but it will remain for future iterations of the theme. It should be left untouched.</p>
+        </li>
+        <li>
+          <p>The fifth section &ldquo;edit_iframe_srcs&rdquo; allows iframes loaded in php to be lazyloaded with our processes. This should be left untouched.</p>
+        </li>
+        <li>
+          <p>The sith section &ldquo;edit_search_form&rdquo; allows us to change the search form submit button text when utilized. Change this as needed.</p>
+        </li>
+        <li>
+          <p>The seventh section calls three php files to include PM-safe scripts into the php. More on this in the <a onclick="scrollView(event, '#pm-safe')">PM-safe directory</a> documentation.</p>
+        </li>
+        <li>
+          <p>The eighth section &ldquo;theme_foot_scripts&rdquo; contains any scripts we need to add to the footer as admins. Out of the box, we only have our lazyloading images, iframes, and backgrounds script, but more may and should be added here as necessary.</p>
+        </li>
+        <li>
+          <p>The ninth section &ldquo;tgm_io_shortcode_empty_paragraph_fix&rdquo;, &ldquo;new_excerpt_more&rdquo;, and the excerpt-length function should be left untouched and simply add functionality to the site to make coding easier.</p>
+        </li>
+        <li>
+          <p>The last section &ldquo;myplugin_ajaxurl&rdquo; is used to AJAX in shortcodes and may be used for ajax calls.</p>
+        </li>
+      </ol>
+      <h3 id="pm-safe">pm-safe (directory)</h3>
+      <p>The pm-safe directory contains three files intended to be used as safe, non-breakable php files for site managers who are not developers, also known as project managers, or PMs. These files are where they can add scripts of their own accord. They are as follows:</p>
+      <ol>
+        <li>
+          <p>after-body-scripts.php &ndash; add scripts directly after the opening &lt;body&gt; tag. An arbitrary hook in the header.php allows for this.</p>
+        </li>
+        <li>
+          <p>footer-scripts.php &ndash; add scripts directly before the closing &lt;/body&gt; tag. This file is being hooked into the wp_footer.</p>
+        </li>
+        <li>
+          <p>header-scripts.php &ndash; add scripts right before the closing &lt;/head&gt; tag. This file is being hooked into the wp_head.</p>
+        </li>
+      </ol>
+      <h3 id="template-parts">template-parts (directory)</h3>
+      <p>The template-parts directory is where all of the stylistic elements, including shortcode php file references, are stored. This directory is broken into several segments as follows:</p>
+      <h4 id="ada-components">ada-components (directory)</h4>
+      <p>This directory houses the pre-built, ADA site components pages. ADA shortcodes are generated in the shortcodes.php file referencing these files:</p>
+      <h5 id="awards-slider">awards-slider.php</h5>
+      <p>This is an ADA component which displays awards and should be left untouched unless adding/subtracting awards or adjusting the CSS color scheme to match the rest of the site.</p>
+      <h5 id="testimonial-slider">testimonial-slider.php</h5>
+      <p>This is an ADA component and for a responsive testimonial slider. The number of slides and the testimonials + the name of the person may be adjusted, and the CSS color and background may change. The file JS should not be changed, however.</p>
+      <h5 id="toggles">toggles.php</h5>
+      <p>The toggles are general and reflect the variable colors in the style.css file. These should generally be left untouched.</p>
+      <h4 id="blocks">blocks (directory)</h4>
+      <p>This directory houses useful, reusable blocks of code that can be used throughout the site in different contexts. If used, these will need to be set up in the shortcodes.php file. They may be set up and used according to each site design and are as follows:</p>
+      <h5 id="button">button.php</h5>
+      <p>Style buttons in a certain way to be used throughout the site design.</p>
+      <h5 id="link">link.php</h5>
+      <p>If some links should work/act in a certain way on the site, use this php template file to display them.</p>
+      <h5 id="text">text.php</h5>
+      <p>If some stylized text is used over and over, consider using this file via shortcode to generate it.</p>
+      <h4 id="blog-styles">blog-styles.php</h4>
+      <p>This file incorporates all of the styles of the index.php file and the single.php file. The key to the overall blog page and individual posts is to keep the styles as simple as possible and the look to be the same as all sites on the Nifty 2021 theme.</p>
+      <p>Colors, header banners, and other site-design-specific CSS can change and be added, but it should strive for simplicity and overall uniformity to all other sites on the theme.</p>
+      <p>There is only one piece of CSS code which should NOT be changed: the width of the content. Research went into deciding the main content text width as it stands in the theme and should not be changed unless requested by the client or director of design.</p>
+      <h4 id="content">content (directory)</h4>
+      <p>This directory houses the necessary php files which render blogs, content, and no content when a loop is called. The files included in the content directory are:</p>
+      <ol>
+        <li>
+          <p>content-blog.php</p>
+        </li>
+        <li>
+          <p>content-excerpt.php</p>
+        </li>
+        <li>
+          <p>content-none.php</p>
+        </li>
+        <li>
+          <p>content-page.php</p>
+        </li>
+        <li>
+          <p>content-single.php</p>
+        </li>
+        <li>
+          <p>content.php</p>
+        </li>
+      </ol>
+      <p>Each of these files is responsible for displaying different content structures and should usually be left untouched unless needed.</p>
+      <h4 id="pages">pages (directory)</h4>
+      <p>Sometimes, some pages will have their own, dedicated content and shortcodes. It is cleaner to incorporate those into their own directories and php files to keep the code organized.</p>
+      <p>For example, many contact pages do not follow the same layout as other pages. Within the pages directory, you could create a contact.php to solve this issue. If a team page or practice areas page on the site has several shortcodes not used anywhere else, it may be advantageous to set up a team directory or practice-areas directory within the pages directory and create shortcodes which utilize php pages within these directories.</p>
+      <p>To illustrate, the file structures of the example above may look similar to this:</p>
+      <ul>
+        <li style="list-style-type: disc;" aria-level="1">
+          <p>template-parts</p>
+          <ul>
+            <li style="list-style-type: disc;">
+              <p>pages</p>
+              <ul>
+                <li style="list-style-type: disc;" aria-level="3">
+                  <p>team (directory)</p>
+                  <ul>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>team-header.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>team-photos.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>team-awards.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>team-members.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>team-bios.php</p>
+                    </li>
+                  </ul>
+                </li>
+                <li style="list-style-type: disc;" aria-level="3">
+                  <p>practice-areas (directory)</p>
+                  <ul>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>indiv-pa.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>pa-header.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>pa-contact.php</p>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sections">sections (directory)</h4>
+      <p>This directory contains sub-directories and files that pertain to the homepage shortcodes, internal page shortcodes, and custom shortcodes respectively.</p>
+      <p>If creating shortcodes that don&rsquo;t belong to one specific page, they belong in this directory.</p>
+      <p>The following illustrates the file system and organization of the sections directory:</p>
+      <ul>
+        <li style="list-style-type: disc;" aria-level="1">
+          <p>template-parts</p>
+          <ul>
+            <li style="list-style-type: disc;">
+              <p>sections</p>
+              <ul>
+                <li style="list-style-type: disc;" aria-level="3">
+                  <p>homepage</p>
+                  <ul>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-awards.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-banner.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-contact.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-cta.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-news.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-pas.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-results.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-social.php&nbsp;</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>home-team.php&nbsp;</p>
+                    </li>
+                  </ul>
+                </li>
+                <li style="list-style-type: disc;" aria-level="3">
+                  <p>internal</p>
+                  <ul>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>internal-banner.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>internal-cta.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>internal-fullwidth.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>internal-pas.php</p>
+                    </li>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>internal-sidebar.php</p>
+                    </li>
+                  </ul>
+                </li>
+                <li style="list-style-type: disc;" aria-level="3">
+                  <p>custom</p>
+                  <ul>
+                    <li style="list-style-type: disc;" aria-level="4">
+                      <p>(custom php pages for custom shortcodes)</p>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <p>Files added to the &ldquo;custom&rdquo; directory may also be segmented into different directories for ease of access and better organization. Each&nbsp;</p>
+      <p>Not every pre-created file will be used for each site design. These are provided out-of-the-box for 2 reasons:</p>
+      <ol>
+        <li>
+          <p>To make development easier and faster to avoid needing to create and upload the most common shortcode files and</p>
+        </li>
+        <li>
+          <p>To ensure consistency in naming across all of our sites. Our goal is for project managers to easily identify which PHP page controls the shortcodes for which they want to change content.</p>
+        </li>
+      </ol>
+      <h4 id="svgs">svgs (directory)</h4>
+      <p>This directory is equipped with php pages that contain svg icons.</p>
+      <p>There are six social icons that come with the theme that may be used, and any more svgs necessary for the site may also be added in this sub-directory.</p>
+      <p>The best way to use these svgs is by using the file_get_contents() php method. It should NOT be in a server call. For example, it should look similar to this:</p>
+      <div align="left">
+        <code>
+          <p>&lt;?= file_get_contents( locate_template('/template-parts/svgs/instagram.php')); ?&gt;</p>
+        </code>
+      </div>
+      <p>The styles for the included svgs should be controlled by their parent php page/shortcode which is using them.</p>
+      <h3 id="ajax-templates">AJAX templates / Shortcode Lazy Loading</h3>
+      <p>These are template files that should be created for lazyloading shortcodes and other content that needs to be hooked into the wordpress core. The following demonstrates how to set up the file system for lazy loading a shortcode.</p>
+      <p>An AJAX php file will exist only in the root.</p>
+      <p>The file name should look like this, with capitalization:</p>
+      <p>AJAX-descriptionofshortcode.php</p>
+      <p>The inside of the file should then look similar to this:</p>
+      <div align="left">
+        <code>
+          <p>&lt;?php</p>
+          <p>/*</p>
+          <p>&nbsp;*</p>
+          <p>&nbsp;* Template Name: AJAX Form 1</p>
+          <p>&nbsp;*&nbsp;</p>
+          <p>&nbsp;*/</p>
+          <p>?&gt;</p>
+          <p>&lt;?= apply_shortcodes('[gravityform id="1" title="false" description="false" ajax="false"]'); ?&gt;</p>
+        </code>
+      </div>
+      <p>Note: It is important to set the ajax value to &ldquo;false&rdquo; or the lazy loading will not work for Gravity Forms.</p>
+      <p>Make the template name:</p>
+      <p>AJAX (description of the shortcode)</p>
+      <p>Echo a do_shortcode() or apply_shortcodes() method with the shortcode inside.</p>
+      <p>Create a wordpress page that should be named as follows</p>
+      <p>AJAX: (same name you used for the template file)</p>
+      <p>Set that page&rsquo;s template to the AJAX template you just created.</p>
+      <p>Be sure to noindex / nofollow the page in Yoast.</p>
+      <p>Save the page.</p>
+      <p>From here, you have one of two options:</p>
+      <ol>
+        <li>
+          <p>You can use a fetch request or</p>
+        </li>
+        <li>
+          <p>You can iframe the shortcode.</p>
+        </li>
+      </ol>
+      <h4 id="fetch-request">Fetch request</h4>
+      <p>If you are using gravity forms, like the example above, you will need to make a fetch request.</p>
+      <p>Some other shortcodes may be loaded this way too, but others may need to be called by an iframe.</p>
+      <p>To make a fetch request, go into the shortcode php file where you want to make the AJAX call. In this example, we are changing the home-contact.php file.</p>
+      <p>Add a fetch request to the AJAX page you created and it will output the shortcode as expected:</p>
+      <div align="left">
+        <code>
+          <p>&lt;script&gt;</p>
+          <p>window.addEventListener("scroll", loadForm);</p>
+          <p>window.addEventListener("load", loadForm);</p>
+          <p>let formLoaded = 0;</p>
+
+          <p>function loadForm(){</p>
+          <p>let sectionTop = document.querySelector(".home-contact").getBoundingClientRect().top;</p>
+          <p>if(sectionTop - window.innerHeight &lt; 150 && formLoaded == 0){</p>
+          <p>fetch("&lt;?= home_url() . '/ajax-form/'; ?&gt;")</p>
+          <p>.then(response =&gt; response.text())</p>
+          <p>.then(data =&gt; {</p>
+          <p>document.querySelector(".home-contact .form-section .form-container").innerHTML = data;</p>
+          <p>&lt;?php </p>
+          <p>global $post;</p>
+          <p>$post_slug = $post-&gt;post_name;</p>
+          <p>?&gt;</p>
+          <p>document.querySelector(".home-contact form").setAttribute("action", "/&lt;?= $post_slug; ?&gt;/#gf_1");</p>
+          <p>let newInput = document.createElement("input");</p>
+          <p>newInput.setAttribute("style", "padding: 15px 10%; margin-top: 8px; text-transform: uppercase;font-family: var(--text-font); font-weight: 700; color: #fff; background: transparent; border-radius: 6px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; border: none; outline: none; user-select: none; color: transparent;");</p>
+          <p>newInput.setAttribute("class", "over-submit");</p>
+          <p>newInput.setAttribute("onclick", "checkLabels()");</p>
+          <p>document.querySelector(".gform_footer.top_label").appendChild(newInput);</p>
+          <p>});</p>
+          <p>formLoaded++;</p>
+          <p>}</p>
+          <p>}</p>
+
+          <p>function checkLabels(){</p>
+          <p>let alerted = 0;</p>
+          <p>document.querySelectorAll(`#gform_1 input[aria-required="true"], #gform_1 textarea[aria-required="true"]`).forEach(item=&gt;{</p>
+          <p>if(!item.value){</p>
+          <p>alerted++;</p>
+          <p>}</p>
+          <p>});</p>
+          <p>if(alerted &gt; 0){</p>
+          <p>alert("Please fill out all required fields. \n Required fields are marked with an asterisk ( * )");</p>
+          <p>}else{</p>
+          <p>document.querySelector(".over-submit").remove();</p>
+          <p>document.querySelector("#gform_submit_button_1").click();</p>
+          <p>}</p>
+          <p>}</p>
+          <p>&lt;/script&gt;</p>
+
+          <p>&lt;script&gt;</p>
+          <p>window.addEventListener("load", fadeinContact);</p>
+          <p>window.addEventListener("scroll", fadeinContact);</p>
+          <p>function fadeinContact(){</p>
+          <p>let scrollFromTop = document.querySelector(".home-contact .lion-head").getBoundingClientRect().top;</p>
+          <p>if(scrollFromTop &lt; window.innerHeight * .66){</p>
+          <p>document.querySelector(".home-contact .lion-head").classList.add("active");</p>
+          <p>}</p>
+          <p>}</p>
+          <p>&lt;/script&gt;</p>
+        </code>
+      </div>
+      <p>The fetch request request is made on scroll or load if the form container is 150px from the bottom of the screen. The fetch request is made to the newly created AJAX page, a new element is created to serve as a validation element, and the function check labels is set to ensure that the validation element works and a form can be submitted.</p>
+      <h4 id="iframe">Iframe</h4>
+      <p>Some shortcodes may not work if they are being called via a fetch request. In this case, we should be able to lazyload the shortcode by iframe instead.</p>
+      <p>If using an iframe, it should look like this:</p>
+      <div align="left">
+        <code>
+          <p>&lt;section class="home-social section-padding"&gt;</p>
+          <p>&lt;iframe width=&rdquo;700&rdquo; height=&rdquo;500px&rdquo; data-url="<a href="https://smstrialstagin.wpengine.com/ajax-instagram/">https://smstrialstagin.wpengine.com/ajax-instagram/</a>"&gt;&lt;/iframe&gt;</p>
+          <p>&lt;/section&gt;</p>
+        </code>
+      </div>
+      <p>Adjust the width and height to compensate for CLS and maintain aspect ratio, depending on the shortcode source you are loading.</p>
+      <h3 id="webp">webp (directory)</h3>
+      <p>This directory is where we add used to add webp images. Previous Wordpress media library functionality didn't support webp images, but newer versions do. If a site was coded before this .webp functionality, this file will still be used by the site in some instances, but all further .webp images can and should be uploaded to the media library as any other image would require.</p>
+      <p>The file blank.php exists simply so that the file will appear in the Wordpress editor, though the webp images won&rsquo;t appear in the file &ndash; these will only be accessible/visible via FTP.</p>
+      <p>For instruction on how to use webp images and when, see <a onclick="scrollView(event, '#loading-images')">images</a>.</p>
+      <h2 id="shortcode-instructions">III. Shortcodes</h2>
+      <p>The following are the standards we set for shortcode creation:</p>
+      <ol>
+        <li>
+          <p>Each section of the webdesign is its own shortcode</p>
+        </li>
+        <li>
+          <p>The shortcode is created in the theme editor under the /includes/shortcodes.php directory</p>
+        </li>
+        <li>
+          <p>The shortcode content (HTML/CSS/JS) will be created in separate php files</p>
+          <ol>
+            <li>
+              <p>New php files can be created/uploaded via FTP</p>
+            </li>
+            <li>
+              <p>Shortcode $atts will be kept inside these files</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>The shortcode name, the php file name which the shortcode references, and the section class should all be the same</p>
+          <ol>
+            <li>
+              <p>example:</p>
+              <ol>
+                <li style="list-style-type: lower-roman;" aria-level="3">
+                  <p>shortcode: [home_banner]</p>
+                </li>
+                <li style="list-style-type: lower-roman;" aria-level="3">
+                  <p>php page: home-banner.php</p>
+                </li>
+                <li style="list-style-type: lower-roman;" aria-level="3">
+                  <p>section class: &lt;section class=&rdquo;home-banner&rdquo;&gt;...&lt;/section&gt;</p>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>Any iframe in the php pages should be loaded as follows:</p>
+          <ol>
+            <li>
+              <p>&lt;iframe data-url=&rdquo;#&rdquo; width=&rdquo;&rdquo; height=&rdquo;&rdquo; anyOtherAttributeNeeded&gt;&lt;/iframe&gt;</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>Images</p>
+          <ol>
+            <li>
+              <p>See the <a onclick="scrollView(event, '#loading-images')">images</a> sub-section.</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>Wrap all styles and scripts associated with the shortcode in a php function and hook the function into the wp_footer unless it is above-the-fold content. If that is the case, load the scripts and styles before the section to avoid FOUT.</p>
+        </li>
+        <li>
+          <p>All internal links must use the following syntax:</p>
+          <ol>
+            <li>
+              <p>&lt;a href=&rdquo;get_permalink($id); ?&gt;&rdquo;&gt;&lt;/a&gt;</p>
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <h3 id="loading-images">Loading Images</h3>
+      <p>Shortcodes with above-the-fold images should be loaded with a &lt;picture&gt; tag. The sources should be webp formats with jpg/png fallbacks, as such:</p>
+      <div align="left">
+        <code>
+          <p>&lt;picture class="lion-bg"&gt;</p>
+          <p>&lt;source media="(min-width: 911px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header.webp'; ?&gt;" type="image/webp"&gt;</p>
+          <p>&lt;source media="(max-width: 910px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header-sm.webp'; ?&gt;" type="image/webp"&gt;</p>
+          <p>&lt;source media="(max-width: 910px)" srcset="&lt;?= wp_get_attachment_image_src(909, 'full')[0]; ?&gt;" type="image/jpg"&gt;</p>
+          <p>&lt;img src="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head"/&gt;</p>
+          <p>&lt;/picture&gt;</p>
+        </code>
+      </div>
+      <p>Any webp images will be loaded in the webp directory.</p>
+      <p>&lt;source&gt; tags will generally consist of media queries and should render a smaller image for mobile devices.</p>
+      <p>The &lt;img&gt; tag will be a png/jpg fallback for these images.</p>
+      <p>These above-the-fold images may be preloaded in the header.</p>
+      <p>If an image is not part of the above-the-fold content, load it in as such, adjusting the alt, width, and height attributes as needed:</p>
+      <div align="left">
+        <code>
+          <p>&lt;img data-url="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head" width=&rdquo;500&rdquo; height=&rdquo;&rdquo; /&gt;</p>
+        </code>
+      </div>
+      <h3>Loading Background Images</h3>
+      <p>If a background is not part of the above-the-fold content, it must be added with a &ldquo;lazyload&rdquo; class. Use the data attribute of data-bg-img and set it to the following php function to get the image source, as follows:</p>
+      <div align="left">
+        <code>
+          <p>&lt;section class=&rdquo;testimonials lazyload&rdquo; data-bg-img=&rdquo;&lt;?= wp_get_attachment_image_src(#, &lsquo;full&rsquo;)[0]; ?&gt;&rdquo;&gt;...&lt;/section&gt;</p>
+        </code>
+      </div>
+      <p>If a background image is part of the above-the-fold content, consider loading it in as an image with a position:absolute value to position it in the background instead of a background image. Use the &lt;picture&gt; tag as explained in <a onclick="scrollView(event, '#loading-images')">Loading Images</a> to accomplish this.</p>
+      <h3>Hiding elements</h3>
+      <p>In the past, web practices allowed for us to display: none for images we want to hide. If at all possible, this should be avoided for two reasons:</p>
+      <ol>
+        <li>
+          <p>Lazyloading</p>
+        </li>
+        <li>
+          <p>ADA accessibility</p>
+        </li>
+      </ol>
+      <p>To hide images, use {overflow:hidden} and {height: 0} instead of {display: none}.</p>
+      <p>This is&nbsp; because {display:none} sets the clientBoundingRect().top to 0, which ruins our lazyloading code. It removes it from its place in the DOM, and renders it as non-deffered in Google&rsquo;s Page Speed Insights.</p>
+      <p>For ADA accessibility, screen readers skip {display: none;} content. We need screen readers to also read content whenever possible.</p>
+      <h2 id="lazy-loading">IV. Lazy Loading Shortcodes</h2>
+      <p>There are three ways of loading shortcodes:</p>
+      <ol>
+        <li>
+          <p>Fetch requests using AJAX templates</p>
+        </li>
+        <li>
+          <p>&lt;iframes&gt; using AJAX templates</p>
+        </li>
+        <li>
+          <p>Fetching resources via wp_ajax and wp_ajax_priv</p>
+        </li>
+      </ol>
+      <p>The first two lazyloading methods are described in detail in <a onclick="scrollView(event, '#ajax-templates')">AJAX templates / Shortcode Lazy Loading</a>.&nbsp;</p>
+      <p>The following describes how to use the wp_ajax and wp_ajax_priv Wordpress functionality:</p>
+      <p>In the /includes/theme-changes.php file, add the following and change the add_actions to match the shortcodes:</p>
+      <div align="left">
+        <code>
+          <p>add_action( 'wp_ajax_nopriv_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
+          <p>add_action( 'wp_ajax_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
+          <p>add_action( 'wp_ajax_my_action_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
+          <p>add_action( 'wp_ajax_nopriv_my_action_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
+          <p>function handle_shortcode_gform1( ) {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;$shortcode = $_REQUEST[gravityform];</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;echo apply_shortcodes('[gravityform id="1"]');</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;wp_die();</p>
+          <p>}</p>
+        </code>
+      </div>
+      <p>Add the following to the php file where the shortcode is being added and change the action to match the "add_action" from the previous instructions:</p>
+      <div align="left">
+        <code>
+          <p>&lt;script&gt;</p>
+          <p>setTimeout(function(){</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var data = {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action: 'handle_shortcode_gform1'</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jQuery.post(ajaxurl, data, function(response) {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jQuery('gravityform').html(response);</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;}, 5000);</p>
+          <p>&lt;/script&gt;</p>
+        </code>
+      </div>
+      <h2 id="gravity-forms">V. Gravity Forms Setup</h2>
+      <p>When using Gravity Forms, set &ldquo;Output CSS&rdquo; to &ldquo;No&rdquo; in settings. This will prevent forms from loading extra, render-blocking styles.</p>
+      <p>When using the gravity form, especially if being lazy loaded, be sure to set the ajax attribute of the shortcode to &ldquo;false&rdquo; to prevent submission errors.</p>
+      <p>Style the validation messages to ensure legibility.</p>
+
+      <h2 id="amp-setup">VI. Setting Up a Site on AMP</h2>
+      <p><strong>Known Issues:</strong></p>
+      <p>- Gravity forms ajax validation messages not working.</p>
+      <p>- AMP cannot be crawled on staging, so validation will only work on live sites.</p>
+      <p>1. Add "AMP" <strong>official</strong> plugin.</p>
+      <p>2. Edit AMP's settings:</p>
+      <p>- Change "Website Mode" to "<strong>Transitional</strong>"</p>
+      <p>- "Validation Handling" &amp; "Supported Templates" both should be checked</p>
+      <p>3. <strong>Edit the PHP part of lazy loader</strong> from:</p>
+      <code>if(!array_key_exists('data-url', $attr)){</code>
+      <p>to:</p>
+      <code>if(!array_key_exists('data-url', $attr) &amp;&amp; !is_amp_endpoint()){</code>
+      <p>4. Add <strong>gravity forms AMP fix file</strong> to theme in <strong>includes folder</strong> &amp; add this to the <strong>top of theme_changes.php</strong>:</p>
+      <code>
+        <p>// Gravity Forms AMP Fixes</p>
+        <p>require_once( get_stylesheet_directory() . '/includes/amp-gf-fix.php' );</p>
+      </code>
+      <p><em>5. View <strong>each AMP page </strong>(within reason) with "?amp" and fix errors.</em></p>
+      <p>- <u>Validating AMP</u> is visually looking at the page <u>and</u> checking google's tool: <a href="https://search.google.com/test/amp">https://search.google.com/test/amp</a></p>
+      <p>- <u>Boolean if on an AMP page is</u>: is_amp_endpoint()</p>
+      <p>- <u>Background images should be lazy loaded for non-AMP but add style image css for AMP pages. Like</u>:</p>
+      <code>
+        <p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
+        <p>.home-team{background-image:url('&lt;?= wp_get_attachment_image_src(5449, 'full')[0]; ?&gt;');}</p>
+        <p>&lt;?php } ?&gt;</p>
+      </code>
+      <p>- <u>Youtube videos can load but not with a missing src attribute. So make them a normal iframe with a src on AMP.</u></p>
+      <p>- <u>Reviews badge should not render in the footer on AMP pages.</u></p>
+      <p>6. Add this to <strong>header scripts</strong> and <strong>edit the UA</strong> code (remember to replace the XX-XXXXX-X placeholders with the actual Google Analytics account number of the client:</p>
+      <code>
+        <p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
+        <p>&lt;script async custom-element="amp-analytics" src="<a class="ProsemirrorEditor-link" href="https://cdn.ampproject.org/v0/amp-analytics-0.1.js">https://cdn.ampproject.org/v0/amp-analytics-0.1.js</a>"&gt;&lt;/script&gt;</p>
+        <p>&lt;amp-analytics type="gtag" data-credentials="include"&gt;</p>
+        <p>&lt;script type="application/json"&gt;</p>
+        <p>&nbsp; {</p>
+        <p>&nbsp; &nbsp; "vars": {</p>
+        <p>"gtag_id": "UA-XXXXX-X",</p>
+        <p>"config" : {</p>
+        <p>&nbsp; "UA-XXXXX-X": { "groups": "default" }</p>
+        <p>}</p>
+        <p>&nbsp; &nbsp; },</p>
+        <p>&nbsp; &nbsp; "triggers": {</p>
+        <p>&nbsp; &nbsp; &nbsp; "trackPageview": {</p>
+        <p>&nbsp; &nbsp; &nbsp; &nbsp; "on": "visible",</p>
+        <p>&nbsp; &nbsp; &nbsp; &nbsp; "request": "pageview"</p>
+        <p>&nbsp; &nbsp; &nbsp; }</p>
+        <p>&nbsp; &nbsp; }</p>
+        <p>&nbsp; }</p>
+        <p>&nbsp; &lt;/script&gt;</p>
+        <p>&lt;/amp-analytics&gt;</p>
+        <p>&lt;?php } ?&gt;</p>
+        <p>&nbsp;</p>
+      </code>
+      <p>7. <strong>Create </strong>an AMP thank you page: /thank-you-amp</p>
+      <p><em> - Reason: because the AMP fix file is setup to do this.</em></p>
+      <p>8. <strong>Optimole</strong> - use this plugin to encode images, don't need to do by hand</p>
+      <p>9. <strong>Ask PM</strong>:</p>
+      <p>- Add an analytics destination goal with <strong>begin-to</strong> to: "/thank-you-amp"</p>
+      <p>- Watch for AMP issues in Google Search Console and tell you if some are invalid.</p>
+      <p>10. <strong>Mark in master sheet</strong> that site is AMP.</p>
+
+      <h2 id="global-considerations">VIII. Global Considerations</h2>
+      <p>There are overarching rules to coding our sites in addition to those already defined in the previous sections. They are as follows:</p>
+      <ol>
+        <li>
+          <p>Only use flexbox to control mobile-responsive flow.</p>
+        </li>
+        <li>
+          <p>Site breakpoints are generally at 1000px and 750px, but additional breakpoints may be used at the developer&rsquo;s discretion to allow for a smooth mobile experience.</p>
+        </li>
+        <li>
+          <p>As a standard, most sections using padding can use the built-in &ldquo;section-padding&rdquo; class, though some designs may require more or less</p>
+          <ol>
+            <li>
+              <p>This gives 5% padding to the top and bottom of the section</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>The &ldquo;content-with&rdquo; class allows most of our sites to be built within an 1100px + padding container, available for sections when necessary. This may be adjusted per site to compensate for designs.</p>
+        </li>
+        <li>
+          <p>Any other footer scripts should be kept in the /includes/theme-changes.php file with the theme_foot_scripts() function as well, with comments to know what the script is.</p>
+        </li>
+        <li>
+          <p>Do not use font-awesome as a library. We have some of the common social icons to replace font-awesome, but any other icons can be generated and used as SVGs instead.</p>
+        </li>
+        <li>
+          <p>Code the site simply. Contain as much code as possible in the sections they belong to. Don&rsquo;t divide the code unless it is absolutely necessary.</p>
+          <ol>
+            <li>
+              <p>For example, don&rsquo;t put one section&rsquo;s styles in a template php file, or don&rsquo;t divide the content into separate php templates files if you have an if/then condition to render different content.</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>If migrating another website to Wordpress, use the Yoast plugin to bring over meta descriptions and match original urls.</p>
+        </li>
+        <li>
+          <p>Mobile menu usually breaks at 1000px, but may be adjusted for different designs.</p>
+        </li>
+        <li>
+          <p>Our company will not use ACF (advanced custom fields) or custom post types. Some custom post types may be brought over from legacy sites which we will continue to use, but if using, each custom post type should have the block editor added to the their capabilities as well as an appropriate template set to style the pages accordingly.</p>
+        </li>
+        <li>
+          <p>Avoid reliance on third-party code bases as much as possible, specifically jQuery. Try to use vanilla JS wherever possible.</p>
+        </li>
+        <li>
+          <p>Our sites do not support IE, so CSS and JS compatibility may be extended to other major browsers.</p>
+        </li>
+        <li>
+          <p><strong>Linking phone numbers:</strong> All linked phone numbers, those being used in an href, should be in the following format regardless of how the text on the front-end is styled or rendered: <br>
+            <code>
+              <a href="tel:(###) ###-####">...</a>
+            </code>
+            <br>
+            This ensures that the number follows the standard calling conventions in the US to allow for caller ID and related phone compatibilities.
+          </p>
+        </li>
+        <li>All styled buttons / <a> tags functioning as buttons need to have at least a simple animation added on hover. Users should also know that the button is a link by ensureing the whole button is clickable and the cursor is a pointer. The words of the button should not be the only linkable part of the button; the whole button needs to be clickable to improve UX.</li>
+        <li>
+          <p>Periodically check pagespeed score as you develop new sections:</p>
+          <ol>
+            <li>
+              <p><a href="https://developers.google.com/speed/pagespeed/insights/">https://developers.google.com/speed/pagespeed/insights/</a></p>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </div>
   </div>
-  <p>Any webp images will be loaded in the webp directory.</p>
-  <p>&lt;source&gt; tags will generally consist of media queries and should render a smaller image for mobile devices.</p>
-  <p>The &lt;img&gt; tag will be a png/jpg fallback for these images.</p>
-  <p>These above-the-fold images may be preloaded in the header.</p>
-  <p>If an image is not part of the above-the-fold content, load it in as such, adjusting the alt, width, and height attributes as needed:</p>
-  <div align="left">
-    <code>
-      <p>&lt;img data-url="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head" width=&rdquo;500&rdquo; height=&rdquo;&rdquo; /&gt;</p>
-    </code>
-  </div>
-  <h3>Loading Background Images</h3>
-  <p>If a background is not part of the above-the-fold content, it must be added with a &ldquo;lazyload&rdquo; class. Use the data attribute of data-bg-img and set it to the following php function to get the image source, as follows:</p>
-  <div align="left">
-    <code>
-      <p>&lt;section class=&rdquo;testimonials lazyload&rdquo; data-bg-img=&rdquo;&lt;?= wp_get_attachment_image_src(#, &lsquo;full&rsquo;)[0]; ?&gt;&rdquo;&gt;...&lt;/section&gt;</p>
-    </code>
-  </div>
-  <p>If a background image is part of the above-the-fold content, consider loading it in as an image with a position:absolute value to position it in the background instead of a background image. Use the &lt;picture&gt; tag as explained in <a onclick="scrollView(event, '#loading-images')">Loading Images</a> to accomplish this.</p>
-  <h3>Hiding elements</h3>
-  <p>In the past, web practices allowed for us to display: none for images we want to hide. If at all possible, this should be avoided for two reasons:</p>
-  <ol>
-    <li>
-      <p>Lazyloading</p>
-    </li>
-    <li>
-      <p>ADA accessibility</p>
-    </li>
-  </ol>
-  <p>To hide images, use {overflow:hidden} and {height: 0} instead of {display: none}.</p>
-  <p>This is&nbsp; because {display:none} sets the clientBoundingRect().top to 0, which ruins our lazyloading code. It removes it from its place in the DOM, and renders it as non-deffered in Google&rsquo;s Page Speed Insights.</p>
-  <p>For ADA accessibility, screen readers skip {display: none;} content. We need screen readers to also read content whenever possible.</p>
-  <h2 id="lazy-loading">IV. Lazy Loading Shortcodes</h2>
-  <p>There are three ways of loading shortcodes:</p>
-  <ol>
-    <li>
-      <p>Fetch requests using AJAX templates</p>
-    </li>
-    <li>
-      <p>&lt;iframes&gt; using AJAX templates</p>
-    </li>
-    <li>
-      <p>Fetching resources via wp_ajax and wp_ajax_priv</p>
-    </li>
-  </ol>
-  <p>The first two lazyloading methods are described in detail in <a onclick="scrollView(event, '#ajax-templates')">AJAX templates / Shortcode Lazy Loading</a>.&nbsp;</p>
-  <p>The following describes how to use the wp_ajax and wp_ajax_priv Wordpress functionality:</p>
-  <p>In the /includes/theme-changes.php file, add the following and change the add_actions to match the shortcodes:</p>
-  <div align="left">
-    <code>
-      <p>add_action( 'wp_ajax_nopriv_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-      <p>add_action( 'wp_ajax_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-      <p>add_action( 'wp_ajax_my_action_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-      <p>add_action( 'wp_ajax_nopriv_my_action_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-      <p>function handle_shortcode_gform1( ) {</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;$shortcode = $_REQUEST[gravityform];</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;echo apply_shortcodes('[gravityform id="1"]');</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;wp_die();</p>
-      <p>}</p>
-    </code>
-  </div>
-  <p>Add the following to the php file where the shortcode is being added and change the action to match the "add_action" from the previous instructions:</p>
-  <div align="left">
-    <code>
-      <p>&lt;script&gt;</p>
-      <p>setTimeout(function(){</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var data = {</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action: 'handle_shortcode_gform1'</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jQuery.post(ajaxurl, data, function(response) {</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jQuery('gravityform').html(response);</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;}, 5000);</p>
-      <p>&lt;/script&gt;</p>
-    </code>
-  </div>
-  <h2 id="gravity-forms">V. Gravity Forms Setup</h2>
-  <p>When using Gravity Forms, set &ldquo;Output CSS&rdquo; to &ldquo;No&rdquo; in settings. This will prevent forms from loading extra, render-blocking styles.</p>
-  <p>When using the gravity form, especially if being lazy loaded, be sure to set the ajax attribute of the shortcode to &ldquo;false&rdquo; to prevent submission errors.</p>
-  <p>Style the validation messages to ensure legibility.</p>
-	
-  <h2 id="amp-setup">VI. Setting Up a Site on AMP</h2>
-  <p><strong>Known Issues:</strong></p>
-  <p>- Gravity forms ajax validation messages not working.</p>
-  <p>- AMP cannot be crawled on staging, so validation will only work on live sites.</p>
-  <p>1. Add "AMP" <strong>official</strong> plugin.</p>
-  <p>2. Edit AMP's settings:</p>
-  <p>- Change "Website Mode" to "<strong>Transitional</strong>"</p>
-  <p>- "Validation Handling" &amp; "Supported Templates" both should be checked</p>
-  <p>3. <strong>Edit the PHP part of lazy loader</strong> from:</p>
-  <code>if(!array_key_exists('data-url', $attr)){</code>
-  <p>to:</p>
-  <code>if(!array_key_exists('data-url', $attr) &amp;&amp; !is_amp_endpoint()){</code>
-  <p>4. Add <strong>gravity forms AMP fix file</strong> to theme in <strong>includes folder</strong> &amp; add this to the <strong>top of theme_changes.php</strong>:</p>
-  <code>
-    <p>// Gravity Forms AMP Fixes</p>
-    <p>require_once( get_stylesheet_directory() . '/includes/amp-gf-fix.php' );</p>
-  </code>
-  <p><em>5. View <strong>each AMP page </strong>(within reason) with "?amp" and fix errors.</em></p>
-  <p>- <u>Validating AMP</u> is visually looking at the page <u>and</u> checking google's tool: <a href="https://search.google.com/test/amp">https://search.google.com/test/amp</a></p>
-  <p>- <u>Boolean if on an AMP page is</u>: is_amp_endpoint()</p>
-  <p>- <u>Background images should be lazy loaded for non-AMP but add style image css for AMP pages. Like</u>:</p>
-  <code>
-    <p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
-    <p>.home-team{background-image:url('&lt;?= wp_get_attachment_image_src(5449, 'full')[0]; ?&gt;');}</p>
-    <p>&lt;?php } ?&gt;</p>
-  </code>
-  <p>- <u>Youtube videos can load but not with a missing src attribute. So make them a normal iframe with a src on AMP.</u></p>
-  <p>- <u>Reviews badge should not render in the footer on AMP pages.</u></p>
-  <p>6. Add this to <strong>header scripts</strong> and <strong>edit the UA</strong> code (remember to replace the XX-XXXXX-X placeholders with the actual Google Analytics account number of the client:</p>
-    <code>
-    	<p>&lt;?php if(is_amp_endpoint()){ ?&gt;</p>
-	<p>&lt;script async custom-element="amp-analytics" src="<a class="ProsemirrorEditor-link" href="https://cdn.ampproject.org/v0/amp-analytics-0.1.js">https://cdn.ampproject.org/v0/amp-analytics-0.1.js</a>"&gt;&lt;/script&gt;</p>
-	<p>&lt;amp-analytics type="gtag" data-credentials="include"&gt;</p>
-	<p>&lt;script type="application/json"&gt;</p>
-	<p>&nbsp; {</p>
-	<p>&nbsp; &nbsp; "vars": {</p>
-	<p>"gtag_id": "UA-XXXXX-X",</p>
-	<p>"config" : {</p>
-	<p>&nbsp; "UA-XXXXX-X": { "groups": "default" }</p>
-	<p>}</p>
-	<p>&nbsp; &nbsp; },</p>
-	<p>&nbsp; &nbsp; "triggers": {</p>
-	<p>&nbsp; &nbsp; &nbsp; "trackPageview": {</p>
-	<p>&nbsp; &nbsp; &nbsp; &nbsp; "on": "visible",</p>
-	<p>&nbsp; &nbsp; &nbsp; &nbsp; "request": "pageview"</p>
-	<p>&nbsp; &nbsp; &nbsp; }</p>
-	<p>&nbsp; &nbsp; }</p>
-	<p>&nbsp; }</p>
-	<p>&nbsp; &lt;/script&gt;</p>
-	<p>&lt;/amp-analytics&gt;</p>
-	<p>&lt;?php } ?&gt;</p>
-	<p>&nbsp;</p>
-    </code>
-  <p>7. <strong>Create </strong>an AMP thank you page: /thank-you-amp</p>
-  <p><em> - Reason: because the AMP fix file is setup to do this.</em></p>
-  <p>8. <strong>Optimole</strong> - use this plugin to encode images, don't need to do by hand</p>
-  <p>9. <strong>Ask PM</strong>:</p>
-  <p>- Add an analytics destination goal with <strong>begin-to</strong> to: "/thank-you-amp"</p>
-  <p>- Watch for AMP issues in Google Search Console and tell you if some are invalid.</p>
-  <p>10. <strong>Mark in master sheet</strong> that site is AMP.</p>	
-	
-	
-  
-	
-  
-  <h2 id="global-considerations">VIII. Global Considerations</h2>
-  <p>There are overarching rules to coding our sites in addition to those already defined in the previous sections. They are as follows:</p>
-  <ol>
-    <li>
-      <p>Only use flexbox to control mobile-responsive flow.</p>
-    </li>
-    <li>
-      <p>Site breakpoints are generally at 1000px and 750px, but additional breakpoints may be used at the developer&rsquo;s discretion to allow for a smooth mobile experience.</p>
-    </li>
-    <li>
-      <p>As a standard, most sections using padding can use the built-in &ldquo;section-padding&rdquo; class, though some designs may require more or less</p>
-      <ol>
-        <li>
-          <p>This gives 5% padding to the top and bottom of the section</p>
-        </li>
-      </ol>
-    </li>
-    <li>
-      <p>The &ldquo;content-with&rdquo; class allows most of our sites to be built within an 1100px + padding container, available for sections when necessary. This may be adjusted per site to compensate for designs.</p>
-    </li>
-    <li>
-      <p>Any other footer scripts should be kept in the /includes/theme-changes.php file with the theme_foot_scripts() function as well, with comments to know what the script is.</p>
-    </li>
-    <li>
-      <p>Do not use font-awesome as a library. We have some of the common social icons to replace font-awesome, but any other icons can be generated and used as SVGs instead.</p>
-    </li>
-    <li>
-      <p>Code the site simply. Contain as much code as possible in the sections they belong to. Don&rsquo;t divide the code unless it is absolutely necessary.</p>
-      <ol>
-        <li>
-          <p>For example, don&rsquo;t put one section&rsquo;s styles in a template php file, or don&rsquo;t divide the content into separate php templates files if you have an if/then condition to render different content.</p>
-        </li>
-      </ol>
-    </li>
-    <li>
-      <p>If migrating another website to Wordpress, use the Yoast plugin to bring over meta descriptions and match original urls.</p>
-    </li>
-    <li>
-      <p>Mobile menu usually breaks at 1000px, but may be adjusted for different designs.</p>
-    </li>
-    <li>
-      <p>Our company will not use ACF (advanced custom fields) or custom post types. Some custom post types may be brought over from legacy sites which we will continue to use, but if using, each custom post type should have the block editor added to the their capabilities as well as an appropriate template set to style the pages accordingly.</p>
-    </li>
-    <li>
-      <p>Avoid reliance on third-party code bases as much as possible, specifically jQuery. Try to use vanilla JS wherever possible.</p>
-    </li>
-    <li>
-      <p>Our sites do not support IE, so CSS and JS compatibility may be extended to other major browsers.</p>
-    </li>
-    <li>
-	    <p><strong>Linking phone numbers:</strong> All linked phone numbers, those being used in an href, should be in the following format regardless of how the text on the front-end is styled or rendered: <br>
-	    <code>
-		    <a href="tel:(###) ###-####">...</a>   
-	    </code>
-	    <br>
-	    This ensures that the number follows the standard calling conventions in the US to allow for caller ID and related phone compatibilities.
-	    </p>
-    </li>
-    <li>All styled buttons / <a> tags functioning as buttons need to have at least a simple animation added on hover. Users should also know that the button is a link by ensureing the whole button is clickable and the cursor is a pointer. The words of the button should not be the only linkable part of the button; the whole button needs to be clickable to improve UX.</li>
-    <li>
-      <p>Periodically check pagespeed score as you develop new sections:</p>
-      <ol>
-        <li>
-          <p><a href="https://developers.google.com/speed/pagespeed/insights/">https://developers.google.com/speed/pagespeed/insights/</a></p>
-        </li>
-      </ol>
-    </li>
-  </ol>
-</div>
-</div>
-	
-<script>
-function scrollView(e,id){
-  e.stopPropagation();
-  var myElement = document.querySelector(id);
-  console.log(id)
-  var topPos = myElement.offsetTop;
-  document.querySelector('.main-content').scrollTop = topPos;
-}
-</script>
+
+  <script>
+    function scrollView(e, id) {
+      e.stopPropagation();
+      var myElement = document.querySelector(id);
+      console.log(id)
+      var topPos = myElement.offsetTop;
+      document.querySelector('.main-content').scrollTop = topPos;
+    }
+  </script>
 
 </body>
+
 </html>
