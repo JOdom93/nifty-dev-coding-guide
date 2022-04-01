@@ -208,10 +208,10 @@
               <p>Google fonts will be loaded in the header.php file. To prevent render blocking, these should be preloaded. We only self-host Google fonts by downloading either woff2, or woff and woff2 versions of the required Google fonts, upload them to the /template-parts/fonts/ directory, then create a stylesheet in the same /fonts/ directory that calls the fonts. Do NOT set a font-display property. Preload the stylesheet and the fonts in the header.php then load them for a no-render-blocking font experience. It should look like the following:</p>
               <code>
                 <p>
-                  <' link rel="preload" as="style" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" /'>
+                  &lt;link rel="preload" as="style" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" /&gt;
                 </p>
                 <p>
-                  <' link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" /'>
+                  &lt;link rel="stylesheet" href="/wp-content/themes/twentytwentyone-child/template-parts/fonts/playfair-display.css" /&gt;
                 </p>
               </code>
               <p><strong>/template-parts/fonts/playfair-display.css (change out the css file for the font you are using)</strong></p>
@@ -238,9 +238,6 @@
             </li>
             <li>
               <p>Any third-party assets being loaded in above-the-fold content should be preconnected.</p>
-            </li>
-            <li>
-              <p>All above-the-fold images should be preloaded on the pages where they are being used, including the logo and images used in the background and foreground of header banners.</p>
             </li>
             <li>
               <p>Any first-party resources being loaded in above-the-fold content should be preloaded.</p>
@@ -323,6 +320,7 @@
           <p>Custom shortcodes: These are any additional shortcodes that may be needed for the site that don&rsquo;t fit within the ADA-specific and standard shortcodes. If a new design or layout is needed, custom shortcodes may and should generously be used. Any shortcode which is outside the realm of &ldquo;internal&rdquo; or &ldquo;home&rdquo; will be marked &ldquo;custom&rdquo; instead and will call shortcodes in the &ldquo;custom&rdquo; directory under template-parts/sections/.</p>
         </li>
       </ol>
+      <p>Any shortcode that will appear above-the-fold on mobile or desktop should have the styles loaded before the HTML content. Otherwise, all shortcode styles will be controlled by a PHP function to place the scripts in the footer to aboid render-blocking.</p>
       <p>Shortcodes should always include a php file in the template-parts directory. The standard shortcode for the Nifty 2021 theme should look like this if it is not a wrapping shortcode:</p>
       <div align="left">
         <code>
@@ -519,6 +517,13 @@
           </ul>
         </li>
       </ul>
+      <h5>/pages/sitemap.php</h5>
+      <p>As part of newer iterations of our theme, included is a sitemap shortcode found in the pages directory called sitemap.php. It is referenced as [nifty_sitemap] where exluded pages may be added by ID like so:</p>
+        <code> 
+          [nifty_sitemap exlude="898, 9320"]
+        </code>
+      <p>Excluded pages are any pages not included in the sitemap and include AJAX page templates, thank you pages, and any other page or post that should NOT be indexed or discovered by Google.</p>
+      <p>The [nifty_sitemap] shorcode only outputs pages and posts at its core, so any custom post types (if using) should be added / included in the "Pages" WP loop.</p>
       <h4 id="sections">sections (directory)</h4>
       <p>This directory contains sub-directories and files that pertain to the homepage shortcodes, internal page shortcodes, and custom shortcodes respectively.</p>
       <p>If creating shortcodes that don&rsquo;t belong to one specific page, they belong in this directory.</p>
@@ -616,11 +621,11 @@
       </div>
       <p>The styles for the included svgs should be controlled by their parent php page/shortcode which is using them.</p>
       <h3 id="ajax-templates">AJAX templates / Shortcode Lazy Loading</h3>
-      <p>These are template files that should be created for lazyloading shortcodes and other content that needs to be hooked into the wordpress core. The following demonstrates how to set up the file system for lazy loading a shortcode.</p>
-      <p>An AJAX php file will exist only in the root.</p>
+      <p>These are template files that should be created for lazyloading shortcodes and other content that needs to be hooked into the wordpress core. The following demonstrates how to set up the file system for lazy loading a shortcode, including forms or other third-party shortcodes.</p>
+      <p>An AJAX php file will exist only in the root of the file system.</p>
       <p>The file name should look like this, with capitalization:</p>
       <p>AJAX-descriptionofshortcode.php</p>
-      <p>The inside of the file should then look similar to this:</p>
+      <p>The inside of the file should then look similar to this (note: we will lazyload all forms this way, including the styles accompanying them):</p>
       <div align="left">
         <code>
           <p>&lt;?php</p>
@@ -630,92 +635,24 @@
           <p>&nbsp;*&nbsp;</p>
           <p>&nbsp;*/</p>
           <p>?&gt;</p>
+          <p>&lt;php // load the header to ensure that we are hooking all the other aspects of the site into this page, including Yoast settings <br> // you will need to add analytics to this page if needed</p>
+          <p>wp_head(); ?></p>
           <p>&lt;?= apply_shortcodes('[gravityform id="1" title="false" description="false" ajax="false"]'); ?&gt;</p>
+          <p>&lt;style>... all of your styles needed for the lazyloaded shortcode will go here ... &lt;/style></p>
         </code>
       </div>
       <p>Note: It is important to set the ajax value to &ldquo;false&rdquo; or the lazy loading will not work for Gravity Forms.</p>
       <p>Make the template name:</p>
       <p>AJAX (description of the shortcode)</p>
       <p>Echo a do_shortcode() or apply_shortcodes() method with the shortcode inside.</p>
+      <p>Add necessary styles for the page below</p>
       <p>Create a wordpress page that should be named as follows</p>
       <p>AJAX: (same name you used for the template file)</p>
       <p>Set that page&rsquo;s template to the AJAX template you just created.</p>
       <p>Be sure to noindex / nofollow the page in Yoast.</p>
       <p>Save the page.</p>
-      <p>From here, you have one of two options:</p>
-      <ol>
-        <li>
-          <p>You can use a fetch request or</p>
-        </li>
-        <li>
-          <p>You can iframe the shortcode.</p>
-        </li>
-      </ol>
-      <h4 id="fetch-request">Fetch request</h4>
-      <p>If you are using gravity forms, like the example above, you will need to make a fetch request.</p>
-      <p>Some other shortcodes may be loaded this way too, but others may need to be called by an iframe.</p>
-      <p>To make a fetch request, go into the shortcode php file where you want to make the AJAX call. In this example, we are changing the home-contact.php file.</p>
-      <p>Add a fetch request to the AJAX page you created and it will output the shortcode as expected:</p>
-      <div align="left">
-        <code>
-          <p>&lt;script&gt;</p>
-          <p>window.addEventListener("scroll", loadForm);</p>
-          <p>window.addEventListener("load", loadForm);</p>
-          <p>let formLoaded = 0;</p>
-
-          <p>function loadForm(){</p>
-          <p>let sectionTop = document.querySelector(".home-contact").getBoundingClientRect().top;</p>
-          <p>if(sectionTop - window.innerHeight &lt; 150 && formLoaded == 0){</p>
-          <p>fetch("&lt;?= home_url() . '/ajax-form/'; ?&gt;")</p>
-          <p>.then(response =&gt; response.text())</p>
-          <p>.then(data =&gt; {</p>
-          <p>document.querySelector(".home-contact .form-section .form-container").innerHTML = data;</p>
-          <p>&lt;?php </p>
-          <p>global $post;</p>
-          <p>$post_slug = $post-&gt;post_name;</p>
-          <p>?&gt;</p>
-          <p>document.querySelector(".home-contact form").setAttribute("action", "/&lt;?= $post_slug; ?&gt;/#gf_1");</p>
-          <p>let newInput = document.createElement("input");</p>
-          <p>newInput.setAttribute("style", "padding: 15px 10%; margin-top: 8px; text-transform: uppercase;font-family: var(--text-font); font-weight: 700; color: #fff; background: transparent; border-radius: 6px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; border: none; outline: none; user-select: none; color: transparent;");</p>
-          <p>newInput.setAttribute("class", "over-submit");</p>
-          <p>newInput.setAttribute("onclick", "checkLabels()");</p>
-          <p>document.querySelector(".gform_footer.top_label").appendChild(newInput);</p>
-          <p>});</p>
-          <p>formLoaded++;</p>
-          <p>}</p>
-          <p>}</p>
-
-          <p>function checkLabels(){</p>
-          <p>let alerted = 0;</p>
-          <p>document.querySelectorAll(`#gform_1 input[aria-required="true"], #gform_1 textarea[aria-required="true"]`).forEach(item=&gt;{</p>
-          <p>if(!item.value){</p>
-          <p>alerted++;</p>
-          <p>}</p>
-          <p>});</p>
-          <p>if(alerted &gt; 0){</p>
-          <p>alert("Please fill out all required fields. \n Required fields are marked with an asterisk ( * )");</p>
-          <p>}else{</p>
-          <p>document.querySelector(".over-submit").remove();</p>
-          <p>document.querySelector("#gform_submit_button_1").click();</p>
-          <p>}</p>
-          <p>}</p>
-          <p>&lt;/script&gt;</p>
-
-          <p>&lt;script&gt;</p>
-          <p>window.addEventListener("load", fadeinContact);</p>
-          <p>window.addEventListener("scroll", fadeinContact);</p>
-          <p>function fadeinContact(){</p>
-          <p>let scrollFromTop = document.querySelector(".home-contact .lion-head").getBoundingClientRect().top;</p>
-          <p>if(scrollFromTop &lt; window.innerHeight * .66){</p>
-          <p>document.querySelector(".home-contact .lion-head").classList.add("active");</p>
-          <p>}</p>
-          <p>}</p>
-          <p>&lt;/script&gt;</p>
-        </code>
-      </div>
-      <p>The fetch request request is made on scroll or load if the form container is 150px from the bottom of the screen. The fetch request is made to the newly created AJAX page, a new element is created to serve as a validation element, and the function check labels is set to ensure that the validation element works and a form can be submitted.</p>
+      <p>From here, you will use an iframe with the shortcoded page you created.</p>
       <h4 id="iframe">Iframe</h4>
-      <p>Some shortcodes may not work if they are being called via a fetch request. In this case, we should be able to lazyload the shortcode by iframe instead.</p>
       <p>If using an iframe, it should look like this:</p>
       <div align="left">
         <code>
@@ -725,9 +662,39 @@
         </code>
       </div>
       <p>Adjust the width and height to compensate for CLS and maintain aspect ratio, depending on the shortcode source you are loading.</p>
+      <p>If you are lazyloading a gravity form with a shortcodes, you will also need to create a "Thank You" page template, as the iframe will redirct to a new page and it needs proper styleing. To do this:</p>
+      <ol>
+        <li>Create a page template in the root of the theme's files. It shoudld be named something like "thankyou.php" or "thank-you-page.php":</li>
+        <li>Set up the template file to be a page template, as such:
+          <code>
+            &lt;?php
+            /*
+             *
+             * Template Name: Thank You
+             * 
+             */
+            ?>
+          </code>
+        </li>
+        <li>Add the wp_head() hook and the content/styles you need for the thank you page:
+          <code>
+            &lt;div class="thanks-content">
+              &nbsp; &nbsp; &lt;h3>Thanks for contacting us!&lt;/h3>
+              &nbsp; &nbsp; &lt;p>Your form was submitted successfully and we will get in touch with you shortly.&lt;/p>
+            &lt;/div>
+            &lt;style>
+              &nbsp; &nbsp; .thanks-content{text-align: center; font-family: sans-serif; padding: 0 15px;}
+              &nbsp; &nbsp; .thanks-content h3{margin: 0; line-height: 1.5em;}
+            &lt;/style>
+          </code>
+        </li>
+        <li>Create a thank you page (if one doesn't already exist).</li>
+        <li>On the thank you page, set the Yoast settings to be "nofollow" and "noindex" and make the template the "Thank You" temlate we just created.</li>
+        <li>Ensure that lazyloaded gravity form is forwarding to this <em>Thank You</em> page in "confirmations".</li>
+        <li>Repeat steps 1 - 6 for all seperate thank you pages created for different forms.</li>
+      </ol>
       <h3 id="webp">webp (directory)</h3>
-      <p>This directory is where we add used to add webp images. Previous Wordpress media library functionality didn't support webp images, but newer versions do. If a site was coded before this .webp functionality, this file will still be used by the site in some instances, but all further .webp images can and should be uploaded to the media library as any other image would require.</p>
-      <p>The file blank.php exists simply so that the file will appear in the Wordpress editor, though the webp images won&rsquo;t appear in the file &ndash; these will only be accessible/visible via FTP.</p>
+      <p>This is an old directory where we used to load .webp image files because they were unsupported in the media library. We will still see this on legacy sites developed on the Nifty 2021 theme.</p>
       <p>For instruction on how to use webp images and when, see <a onclick="scrollView(event, '#loading-images')">images</a>.</p>
       <h2 id="shortcode-instructions">III. Shortcodes</h2>
       <p>The following are the standards we set for shortcode creation:</p>
@@ -801,18 +768,16 @@
       <div align="left">
         <code>
           <p>&lt;picture class="lion-bg"&gt;</p>
-          <p>&lt;source media="(min-width: 911px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header.webp'; ?&gt;" type="image/webp"&gt;</p>
-          <p>&lt;source media="(max-width: 910px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header-sm.webp'; ?&gt;" type="image/webp"&gt;</p>
-          <p>&lt;source media="(max-width: 910px)" srcset="&lt;?= wp_get_attachment_image_src(909, 'full')[0]; ?&gt;" type="image/jpg"&gt;</p>
-          <p>&lt;img src="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head"/&gt;</p>
-          <p>&lt;/picture&gt;</p>
+          <p>&nbsp; &nbsp; &lt;source media="(min-width: 911px)" srcset="&lt;?= wp_get_attachment_url(); ?&gt;" type="image/webp"&gt;</p>
+          <p>&nbsp; &nbsp; &lt;source media="(max-width: 910px)" srcset="&lt;?= get_stylesheet_directory_uri() . '/webp-images/lion-header-sm.webp'; ?&gt;" type="image/webp"&gt;</p>
+          <p>&nbsp; &nbsp; &lt;img src="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head"/&gt;</p>
+          <p>&nbsp; &nbsp; &lt;/picture&gt;</p>
         </code>
       </div>
-      <p>Any webp images will be loaded in the webp directory.</p>
-      <p>&lt;source&gt; tags will generally consist of media queries and should render a smaller image for mobile devices.</p>
-      <p>The &lt;img&gt; tag will be a png/jpg fallback for these images.</p>
-      <p>These above-the-fold images may be preloaded in the header.</p>
-      <p>If an image is not part of the above-the-fold content, load it in as such, adjusting the alt, width, and height attributes as needed:</p>
+      <p>Any webp images will be loaded in and called from the Wordpress media library like all other images</p>
+      <p>&lt;source&gt; tags will generally consist of media queries and should render a smaller image for mobile devices. 450px is the ideal breakpoint for mobile images</p>
+      <p>The &lt;img&gt; tag will be a png/jpg fallback for the webp images.</p>
+      <p>If an image is not part of the above-the-fold content, load it in as and image using the data-url attribute to replace the src attribute, adjusting the alt, width, and height attributes as needed:</p>
       <div align="left">
         <code>
           <p>&lt;img data-url="&lt;?= wp_get_attachment_image_src(897, 'full')[0]; ?&gt;" alt="lion head" width=&rdquo;500&rdquo; height=&rdquo;&rdquo; /&gt;</p>
@@ -825,7 +790,7 @@
           <p>&lt;section class=&rdquo;testimonials lazyload&rdquo; data-bg-img=&rdquo;&lt;?= wp_get_attachment_image_src(#, &lsquo;full&rsquo;)[0]; ?&gt;&rdquo;&gt;...&lt;/section&gt;</p>
         </code>
       </div>
-      <p>If a background image is part of the above-the-fold content, consider loading it in as an image with a position:absolute value to position it in the background instead of a background image. Use the &lt;picture&gt; tag as explained in <a onclick="scrollView(event, '#loading-images')">Loading Images</a> to accomplish this.</p>
+      <p>If a background image is part of the above-the-fold content, load it in as an image with a position:absolute value to position it in the background instead of a background image. Use the &lt;picture&gt; tag as explained in <a onclick="scrollView(event, '#loading-images')">Loading Images</a> to accomplish this.</p>
       <h3>Hiding elements</h3>
       <p>In the past, web practices allowed for us to display: none for images we want to hide. If at all possible, this should be avoided for two reasons:</p>
       <ol>
@@ -840,49 +805,13 @@
       <p>This is&nbsp; because {display:none} sets the clientBoundingRect().top to 0, which ruins our lazyloading code. It removes it from its place in the DOM, and renders it as non-deffered in Google&rsquo;s Page Speed Insights.</p>
       <p>For ADA accessibility, screen readers skip {display: none;} content. We need screen readers to also read content whenever possible.</p>
       <h2 id="lazy-loading">IV. Lazy Loading Shortcodes</h2>
-      <p>There are three ways of loading shortcodes:</p>
+      <p>There were previously three ways of lazy-loading shortcodes, but we now only follow one way:</p>
       <ol>
-        <li>
-          <p>Fetch requests using AJAX templates</p>
-        </li>
         <li>
           <p>&lt;iframes&gt; using AJAX templates</p>
         </li>
-        <li>
-          <p>Fetching resources via wp_ajax and wp_ajax_priv</p>
-        </li>
       </ol>
-      <p>The first two lazyloading methods are described in detail in <a onclick="scrollView(event, '#ajax-templates')">AJAX templates / Shortcode Lazy Loading</a>.&nbsp;</p>
-      <p>The following describes how to use the wp_ajax and wp_ajax_priv Wordpress functionality:</p>
-      <p>In the /includes/theme-changes.php file, add the following and change the add_actions to match the shortcodes:</p>
-      <div align="left">
-        <code>
-          <p>add_action( 'wp_ajax_nopriv_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-          <p>add_action( 'wp_ajax_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-          <p>add_action( 'wp_ajax_my_action_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-          <p>add_action( 'wp_ajax_nopriv_my_action_handle_shortcode_gform1', 'handle_shortcode_gform1' );</p>
-          <p>function handle_shortcode_gform1( ) {</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;$shortcode = $_REQUEST[gravityform];</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;echo apply_shortcodes('[gravityform id="1"]');</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;wp_die();</p>
-          <p>}</p>
-        </code>
-      </div>
-      <p>Add the following to the php file where the shortcode is being added and change the action to match the "add_action" from the previous instructions:</p>
-      <div align="left">
-        <code>
-          <p>&lt;script&gt;</p>
-          <p>setTimeout(function(){</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var data = {</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action: 'handle_shortcode_gform1'</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;};</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jQuery.post(ajaxurl, data, function(response) {</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jQuery('gravityform').html(response);</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;}, 5000);</p>
-          <p>&lt;/script&gt;</p>
-        </code>
-      </div>
+      <p>This method is discussed in detail here: <a onclick="scrollView(event, '#ajax-templates')">AJAX templates / Shortcode Lazy Loading</a>.&nbsp;</p>
       <h2 id="gravity-forms">V. Gravity Forms Setup</h2>
       <p>When using Gravity Forms, set &ldquo;Output CSS&rdquo; to &ldquo;No&rdquo; in settings. This will prevent forms from loading extra, render-blocking styles.</p>
       <p>When using the gravity form, especially if being lazy loaded, be sure to set the ajax attribute of the shortcode to &ldquo;false&rdquo; to prevent submission errors.</p>
@@ -948,7 +877,7 @@
       <p>- Add an analytics destination goal with <strong>begin-to</strong> to: "/thank-you-amp"</p>
       <p>- Watch for AMP issues in Google Search Console and tell you if some are invalid.</p>
       <p>10. <strong>Mark in master sheet</strong> that site is AMP.</p>
-      
+
       <h2 id="translations">VIII. Adding Site Translations</h2>
       <p>There are certain sites that will require translations. These translations will be handled manually in our code. The following steps detail how this is to be done.</p>
       <p>To understand clearly how to do this, we will have a few terms we need to define for this guide so that we are clear: </p>
@@ -980,7 +909,7 @@
             //checks if the page is English or Spanish (defaults to English) <br>
             // this is necessary for both the language switcher and switching the menus<br>
             if(get_post_meta(get_the_ID(), 'is_translation', true)){ <br>
-             &nbsp; &nbsp; $language = 'translation';<br>
+            &nbsp; &nbsp; $language = 'translation';<br>
             }else{ <br>
             &nbsp; &nbsp; $language = 'english'<br>
             }
@@ -988,16 +917,16 @@
             <br>
             //checks if the page has English or Spanish translations for the language switcher<br>
             if(get_post_meta(get_the_ID(), 'has_translation', true)){ <br>
-              &nbsp; &nbsp; $translated_page = get_post_meta(get_the_ID(), 'has_translation', true);<br>
+            &nbsp; &nbsp; $translated_page = get_post_meta(get_the_ID(), 'has_translation', true);<br>
             }else{ <br>
-               &nbsp; &nbsp; $translated_page = &lt;page ID of the overall language page&gt;;<br>
+            &nbsp; &nbsp; $translated_page = &lt;page ID of the overall language page&gt;;<br>
             }
             <br>
             <br>
             if(get_post_meta(get_the_ID(), 'is_translation', true)){ <br>
-              &nbsp; &nbsp; $english_page = get_post_meta(get_the_ID(), 'is_translation', true);<br>
+            &nbsp; &nbsp; $english_page = get_post_meta(get_the_ID(), 'is_translation', true);<br>
             }else{ <br>
-               &nbsp; &nbsp; $english_page = &lt;page ID of the home page page&gt;;<br>
+            &nbsp; &nbsp; $english_page = &lt;page ID of the home page page&gt;;<br>
             }<br>
             ?>
           </code>
@@ -1035,7 +964,7 @@
             &nbsp; &nbsp; )); <br>
             &nbsp; &nbsp; } <br>
             ?> <br>
-            &nbsp; &nbsp; &lt;/nav>  <br>
+            &nbsp; &nbsp; &lt;/nav> <br>
             &lt;/div>
           </code>
         </li>
@@ -1129,7 +1058,7 @@
             This ensures that the number follows the standard calling conventions in the US to allow for caller ID and related phone compatibilities.
           </p>
         </li>
-        <li>All styled buttons / <a> tags functioning as buttons need to have at least a simple animation added on hover. Users should also know that the button is a link by ensureing the whole button is clickable and the cursor is a pointer. The words of the button should not be the only linkable part of the button; the whole button needs to be clickable to improve UX.</li>
+        <li>All styled buttons / &lt;a&gt; tags functioning as buttons need to have at least a simple animation added on hover. Users should also know that the button is a link by ensureing the whole button is clickable and the cursor is a pointer. The words of the button should not be the only linkable part of the button; the whole button needs to be clickable to improve UX.</li>
         <li>
           <p>Periodically check pagespeed score as you develop new sections:</p>
           <ol>
