@@ -1040,6 +1040,7 @@
         <li>
           <p>Mobile menu usually breaks at 1000px, but may be adjusted for different designs.</p>
         </li>
+        <li>Try to avoid CSS transitions that use non-composited animations, which is any animatmion that is not opacity or transform. If using a non-composited animation transition, specify only the properties that should be changed. NEVER set the transition to be "all". This substantially slows down page speed.</li>
         <li>
           <p>Our company will not use ACF (advanced custom fields) or custom post types. Some custom post types may be brought over from legacy sites which we will continue to use, but if using, each custom post type should have the block editor added to the their capabilities as well as an appropriate template set to style the pages accordingly.</p>
         </li>
